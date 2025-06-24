@@ -20,7 +20,7 @@ export default function DashboardLayout({
     <Flex minH="100vh">
       {/* Sidebar */}
       <Box
-        w="250px"
+        w="20%"
         bg="blue.600"
         color="white"
         p={4}
