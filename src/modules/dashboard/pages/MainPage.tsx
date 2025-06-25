@@ -12,7 +12,7 @@ export default function MainPage() {
             <Text fontSize={"3xl"} fontWeight={"bold"}>
               Welcome Back, Yoseph 👋
             </Text>
-            <Text fontWeight={"light"}>Take a look at your apps</Text>
+            <Text fontWeight={"light"}>Take a look at your app's stats</Text>
           </div>
           <div className="flex flex-col gap-2">
             <Text fontSize={"xl"} fontWeight={"bold"}>
