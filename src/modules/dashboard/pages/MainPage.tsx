@@ -2,8 +2,16 @@ import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Heading, Text, Card } from "@chakra-ui/react";
 import AppCard from "../components/AppCard";
 import BalanceCard from "../components/BalanceCard";
+import { getSession } from "@/modules/auth/lib/helpers/session";
+import { redirect } from "next/navigation";
 
-export default function MainPage() {
+export default async function MainPage() {
+  const userId = await getSession();
+
+  if (!userId) {
+    redirect("/login"); // or show a 401 page
+  }
+
   return (
     <div>
       <div className="w-full flex gap-10">

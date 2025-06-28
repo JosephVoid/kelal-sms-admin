@@ -1,25 +1,27 @@
-import { Table } from "@chakra-ui/react";
+"use client";
+
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 
 export default function MiniTable() {
+  const Columns: GridColDef[] = [
+    {
+      field: "id",
+      headerName: "ID",
+    },
+    {
+      field: "name",
+      headerName: "Name",
+    },
+    {
+      field: "category",
+      headerName: "Category",
+    },
+  ];
+
   return (
-    <Table.Root size="sm">
-      <Table.Header>
-        <Table.Row>
-          <Table.ColumnHeader>Product</Table.ColumnHeader>
-          <Table.ColumnHeader>Category</Table.ColumnHeader>
-          <Table.ColumnHeader textAlign="end">Price</Table.ColumnHeader>
-        </Table.Row>
-      </Table.Header>
-      <Table.Body>
-        {items.map((item) => (
-          <Table.Row key={item.id}>
-            <Table.Cell>{item.name}</Table.Cell>
-            <Table.Cell>{item.category}</Table.Cell>
-            <Table.Cell textAlign="end">{item.price}</Table.Cell>
-          </Table.Row>
-        ))}
-      </Table.Body>
-    </Table.Root>
+    <div>
+      <DataGrid columns={Columns} rows={items} />
+    </div>
   );
 }
 

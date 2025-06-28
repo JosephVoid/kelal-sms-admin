@@ -22,8 +22,10 @@
     "paths": {
       "@/components/*": ["components/*"],
       "@/modules/*": ["modules/*"],
+      "@/types/*": ["types/*"],
       "@/lib/*": ["lib/*"],
-      "@/utils/*": ["utils/*"]
+      "@/utils/*": ["utils/*"],
+      "@/prisma/*": ["generated/prisma/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

@@ -1,0 +1,150 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model accounts {
+  id           String         @id(map: "Accounts_pkey") @db.Uuid
+  name         String         @db.VarChar
+  balance      Float
+  updatedAt    DateTime?      @db.Timestamp(6)
+  createdAt    DateTime?      @db.Timestamp(6)
+  apps         apps[]
+  logs         logs[]
+  useraccounts useraccounts[]
+}
+
+model apps {
+  id        String     @id(map: "Apps_pkey") @db.Uuid
+  accountId String     @db.Uuid
+  updatedAt DateTime?  @db.Timestamp(6)
+  createdAt DateTime?  @db.Timestamp(6)
+  name      String?    @db.VarChar(200)
+  accounts  accounts   @relation(fields: [accountId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Apps_accountId_fkey")
+  keys      keys[]
+  logs      logs[]
+  messages  messages[]
+}
+
+model keys {
+  id        String    @id(map: "Keys_pkey") @db.Uuid
+  appId     String    @db.Uuid
+  keyHash   String    @db.VarChar
+  name      String    @db.VarChar
+  expiresOn DateTime  @db.Timestamp(6)
+  lastUsed  DateTime? @db.Timestamp(6)
+  updatedAt DateTime? @db.Timestamp(6)
+  createdAt DateTime? @db.Timestamp(6)
+  apps      apps      @relation(fields: [appId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Keys_appId_fkey")
+  logs      logs[]
+}
+
+model logs {
+  id            String        @id(map: "Logs_pkey") @db.Uuid
+  userId        String?       @db.Uuid
+  accountId     String?       @db.Uuid
+  appId         String?       @db.Uuid
+  userAccountId String?       @db.Uuid
+  keyId         String?       @db.Uuid
+  messageId     String?       @db.Uuid
+  serviceId     String?       @db.Uuid
+  providerId    String?       @db.Uuid
+  request       Json?         @db.Json
+  requestTime   DateTime?     @db.Timestamp(6)
+  response      Json?         @db.Json
+  responseTime  DateTime?     @db.Timestamp(6)
+  logMessage    String        @db.VarChar
+  updatedAt     DateTime?     @db.Timestamp(6)
+  createdAt     DateTime?     @db.Timestamp(6)
+  accounts      accounts?     @relation(fields: [accountId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Logs_accountId_fkey")
+  apps          apps?         @relation(fields: [appId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Logs_appId_fkey")
+  keys          keys?         @relation(fields: [keyId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Logs_keyId_fkey")
+  messages      messages?     @relation(fields: [messageId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Logs_messageId_fkey")
+  providers     providers?    @relation(fields: [providerId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Logs_providerId_fkey")
+  services      services?     @relation(fields: [serviceId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Logs_serviceId_fkey")
+  useraccounts  useraccounts? @relation(fields: [userAccountId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Logs_userAccountId_fkey")
+  users         users?        @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Logs_userId_fkey")
+}
+
+model messages {
+  id          String    @id(map: "Messages_pkey") @db.Uuid
+  appId       String    @db.Uuid
+  sentTo      String    @db.VarChar
+  content     String    @db.VarChar
+  serviceId   String    @db.Uuid
+  status      status
+  providerId  String    @db.Uuid
+  externalId  String?   @db.VarChar
+  sentAt      DateTime? @db.Timestamp(6)
+  deliveredAt DateTime? @db.Timestamp(6)
+  updatedAt   DateTime? @db.Timestamp(6)
+  createdAt   DateTime? @db.Timestamp(6)
+  logs        logs[]
+  apps        apps      @relation(fields: [appId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Messages_appId_fkey")
+  providers   providers @relation(fields: [providerId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Messages_providerId_fkey")
+  services    services  @relation(fields: [serviceId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Messages_serviceId_fkey")
+}
+
+model providers {
+  id             String     @id(map: "Providers_pkey") @db.Uuid
+  name           String
+  url            String     @db.VarChar
+  headers        Json?      @db.Json
+  bodySchema     Json?      @db.Json
+  costPerMessage Float
+  updatedAt      DateTime?  @db.Timestamp(6)
+  createdAt      DateTime?  @db.Timestamp(6)
+  logs           logs[]
+  messages       messages[]
+}
+
+model services {
+  id              String     @id(map: "Services_pkey") @db.Uuid
+  name            String
+  pricePerMessage Float
+  updatedAt       DateTime?  @db.Timestamp(6)
+  createdAt       DateTime?  @db.Timestamp(6)
+  logs            logs[]
+  messages        messages[]
+}
+
+model useraccounts {
+  id        String    @id(map: "UserAccounts_pkey") @db.Uuid
+  userId    String    @db.Uuid
+  accountId String    @db.Uuid
+  role      roles
+  updatedAt DateTime? @db.Timestamp(6)
+  createdAt DateTime? @db.Timestamp(6)
+  logs      logs[]
+  accounts  accounts  @relation(fields: [accountId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "UserAccounts_accountId_fkey")
+  users     users     @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "UserAccounts_userId_fkey")
+}
+
+model users {
+  id           String         @id(map: "Users_pkey") @db.Uuid
+  fullName     String         @db.VarChar
+  email        String         @unique @db.VarChar
+  password     String         @db.VarChar
+  updatedAt    DateTime?      @db.Timestamp(6)
+  createdAt    DateTime?      @db.Timestamp(6)
+  logs         logs[]
+  useraccounts useraccounts[]
+}
+
+enum roles {
+  owner
+  viewer
+  admin
+}
+
+enum status {
+  pending
+  sent
+  delivered
+  failed
+}
