@@ -2,13 +2,17 @@
 
 import { useChart, Chart } from "@chakra-ui/charts";
 import { PieChart, Tooltip, Pie, LabelList, Cell } from "recharts";
+import { fetchMsgStatusAction } from "../lib/actions/fetchMsgStatus.action";
+import { capitalizeFirst } from "../utils";
+import CustomPieTooltip from "./CustomToolTip";
 
-export default function DeliveryPieChart() {
+export default function DeliveryPieChart({
+  data,
+}: {
+  data: Awaited<ReturnType<typeof fetchMsgStatusAction>>;
+}) {
   const chart = useChart({
-    data: [
-      { name: "Delivered", value: 400, color: "green.solid" },
-      { name: "Failed", value: 300, color: "red.solid" },
-    ],
+    data,
   });
 
   return (
@@ -17,16 +21,22 @@ export default function DeliveryPieChart() {
         <Tooltip
           cursor={false}
           animationDuration={100}
-          content={<Chart.Tooltip hideLabel />}
+          content={<CustomPieTooltip />}
         />
         <Pie
           isAnimationActive={false}
           data={chart.data}
-          dataKey={chart.key("value")}
+          dataKey={chart.key("count")}
+          nameKey={chart.key("status")}
         >
-          <LabelList position="inside" fill="white" stroke="none" />
-          {chart.data.map((item) => (
-            <Cell key={item.name} fill={chart.color(item.color)} />
+          <LabelList
+            position="inside"
+            fill="white"
+            stroke="none"
+            content={(props) => <p>{capitalizeFirst(String(props.value))}</p>}
+          />
+          {chart.data.map((item, idx) => (
+            <Cell key={item.status} fill={item.color} />
           ))}
         </Pie>
       </PieChart>

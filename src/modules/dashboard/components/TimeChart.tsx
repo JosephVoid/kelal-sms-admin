@@ -11,18 +11,16 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import CustomPieTooltip from "./CustomToolTip";
 
-export default function TimeChart() {
+export default function TimeChart({
+  data,
+}: {
+  data: { day: Date; count: number }[];
+}) {
   const chart = useChart({
-    data: [
-      { sale: 10, month: "January" },
-      { sale: 95, month: "February" },
-      { sale: 87, month: "March" },
-      { sale: 88, month: "May" },
-      { sale: 65, month: "June" },
-      { sale: 90, month: "August" },
-    ],
-    series: [{ name: "sale", color: "teal.solid" }],
+    data,
+    series: [{ name: "count", color: "teal.solid" }],
   });
   return (
     <div>
@@ -31,8 +29,14 @@ export default function TimeChart() {
           <CartesianGrid stroke={chart.color("border")} vertical={false} />
           <XAxis
             axisLine={false}
-            dataKey={chart.key("month")}
+            dataKey={chart.key("day")}
             stroke={chart.color("border")}
+            tickFormatter={(value) =>
+              new Date(value).toLocaleDateString("en-US", {
+                month: "short",
+                day: "2-digit",
+              })
+            }
           />
           <YAxis
             axisLine={false}
@@ -43,7 +47,7 @@ export default function TimeChart() {
           <Tooltip
             animationDuration={100}
             cursor={false}
-            content={<Chart.Tooltip />}
+            content={<CustomPieTooltip type="time" />}
           />
           {chart.series.map((item) => (
             <Line

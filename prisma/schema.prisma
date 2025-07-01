@@ -24,7 +24,7 @@ model apps {
   accountId String     @db.Uuid
   updatedAt DateTime?  @db.Timestamp(6)
   createdAt DateTime?  @db.Timestamp(6)
-  name      String?    @db.VarChar(200)
+  name      String     @db.VarChar(200)
   accounts  accounts   @relation(fields: [accountId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Apps_accountId_fkey")
   keys      keys[]
   logs      logs[]

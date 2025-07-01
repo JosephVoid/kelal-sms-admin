@@ -4,6 +4,9 @@ import AppCard from "../components/AppCard";
 import BalanceCard from "../components/BalanceCard";
 import { getSession } from "@/modules/auth/lib/helpers/session";
 import { redirect } from "next/navigation";
+import fetchAccountAppsAction from "../lib/actions/fetchAccountApps.action";
+import fetchUserAccountAction from "../lib/actions/fetchUserAccount.action";
+import fetchUserAction from "../lib/actions/fetchUser.action";
 
 export default async function MainPage() {
   const userId = await getSession();
@@ -11,6 +14,10 @@ export default async function MainPage() {
   if (!userId) {
     redirect("/login"); // or show a 401 page
   }
+  const user = await fetchUserAction(userId);
+  const userAccount = await fetchUserAccountAction(userId);
+  const apps =
+    userAccount && (await fetchAccountAppsAction(userAccount?.accountId));
 
   return (
     <div>
@@ -18,7 +25,7 @@ export default async function MainPage() {
         <div className="w-4/6 flex flex-col gap-8">
           <div>
             <Text fontSize={"3xl"} fontWeight={"bold"}>
-              Welcome Back, Yoseph 👋
+              Welcome Back, {user?.fullName} 👋
             </Text>
             <Text fontWeight={"light"}>Take a look at your app's stats</Text>
           </div>
@@ -27,11 +34,13 @@ export default async function MainPage() {
               Apps 🖥️
             </Text>
             <div>
-              <AppCard name="My App" />
+              {apps?.map((app) => (
+                <AppCard key={app.id} name={app?.name ?? ""} appId={app?.id} />
+              ))}
             </div>
           </div>
         </div>
-        <BalanceCard />
+        <BalanceCard balance={userAccount?.accounts.balance ?? 0} />
       </div>
     </div>
   );
