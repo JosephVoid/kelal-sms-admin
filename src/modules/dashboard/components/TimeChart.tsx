@@ -12,6 +12,7 @@ import {
   YAxis,
 } from "recharts";
 import CustomPieTooltip from "./CustomToolTip";
+import { Text } from "@chakra-ui/react";
 
 export default function TimeChart({
   data,
@@ -23,7 +24,10 @@ export default function TimeChart({
     series: [{ name: "count", color: "teal.solid" }],
   });
   return (
-    <div>
+    <div className="text-center">
+      <Text fontWeight={"light"} fontSize={"small"}>
+        Sent Messages
+      </Text>
       <Chart.Root chart={chart} my={6}>
         <LineChart data={chart.data}>
           <CartesianGrid stroke={chart.color("border")} vertical={false} />

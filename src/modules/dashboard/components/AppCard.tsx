@@ -23,9 +23,6 @@ export default async function AppCard(props: IAppCard) {
               <DeliveryPieChart data={statusChart} />
             </div>
           </div>
-          <div>
-            <MiniTable />
-          </div>
         </Card.Body>
       </Card.Root>
     </>

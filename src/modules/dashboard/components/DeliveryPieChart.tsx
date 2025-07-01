@@ -5,6 +5,7 @@ import { PieChart, Tooltip, Pie, LabelList, Cell } from "recharts";
 import { fetchMsgStatusAction } from "../lib/actions/fetchMsgStatus.action";
 import { capitalizeFirst } from "../utils";
 import CustomPieTooltip from "./CustomToolTip";
+import { Text } from "@chakra-ui/react";
 
 export default function DeliveryPieChart({
   data,
@@ -16,30 +17,35 @@ export default function DeliveryPieChart({
   });
 
   return (
-    <Chart.Root mx="auto" chart={chart} my={6}>
-      <PieChart>
-        <Tooltip
-          cursor={false}
-          animationDuration={100}
-          content={<CustomPieTooltip />}
-        />
-        <Pie
-          isAnimationActive={false}
-          data={chart.data}
-          dataKey={chart.key("count")}
-          nameKey={chart.key("status")}
-        >
-          <LabelList
-            position="inside"
-            fill="white"
-            stroke="none"
-            content={(props) => <p>{capitalizeFirst(String(props.value))}</p>}
+    <div className="text-center">
+      <Text fontWeight={"light"} fontSize={"small"}>
+        Delivery Status
+      </Text>
+      <Chart.Root mx="auto" chart={chart} my={6}>
+        <PieChart>
+          <Tooltip
+            cursor={false}
+            animationDuration={100}
+            content={<CustomPieTooltip />}
           />
-          {chart.data.map((item, idx) => (
-            <Cell key={item.status} fill={item.color} />
-          ))}
-        </Pie>
-      </PieChart>
-    </Chart.Root>
+          <Pie
+            isAnimationActive={false}
+            data={chart.data}
+            dataKey={chart.key("count")}
+            nameKey={chart.key("status")}
+          >
+            <LabelList
+              position="inside"
+              fill="white"
+              stroke="none"
+              content={(props) => <p>{capitalizeFirst(String(props.value))}</p>}
+            />
+            {chart.data.map((item, idx) => (
+              <Cell key={item.status} fill={item.color} />
+            ))}
+          </Pie>
+        </PieChart>
+      </Chart.Root>
+    </div>
   );
 }
