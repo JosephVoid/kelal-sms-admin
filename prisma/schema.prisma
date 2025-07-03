@@ -20,7 +20,7 @@ model accounts {
 }
 
 model apps {
-  id        String     @id(map: "Apps_pkey") @db.Uuid
+  id        String     @id(map: "Apps_pkey") @default(uuid()) @db.Uuid
   accountId String     @db.Uuid
   updatedAt DateTime?  @db.Timestamp(6)
   createdAt DateTime?  @db.Timestamp(6)
@@ -32,12 +32,12 @@ model apps {
 }
 
 model keys {
-  id        String    @id(map: "Keys_pkey") @db.Uuid
+  id        String    @id(map: "Keys_pkey") @default(uuid()) @db.Uuid
   appId     String    @db.Uuid
   keyHash   String    @db.VarChar
   name      String    @db.VarChar
   expiresOn DateTime  @db.Timestamp(6)
-  lastUsed  DateTime  @db.Timestamp(6)
+  lastUsed  DateTime? @db.Timestamp(6)
   updatedAt DateTime? @db.Timestamp(6)
   createdAt DateTime? @db.Timestamp(6)
   apps      apps      @relation(fields: [appId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Keys_appId_fkey")
