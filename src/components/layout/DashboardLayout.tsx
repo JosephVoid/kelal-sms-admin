@@ -12,6 +12,7 @@ import { FaSignOutAlt } from "react-icons/fa";
 import Link from "next/link";
 import { logoutAction } from "@/modules/auth/lib/actions/logout.action";
 import { SidebarItem } from "./SideBarItem";
+import { Toaster } from "../ui/toaster";
 
 export default function DashboardLayout({
   children,
@@ -83,6 +84,7 @@ export default function DashboardLayout({
           Dashboard
         </Heading>
         {children}
+        <Toaster />
       </Box>
     </Flex>
   );

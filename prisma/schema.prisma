@@ -37,7 +37,7 @@ model keys {
   keyHash   String    @db.VarChar
   name      String    @db.VarChar
   expiresOn DateTime  @db.Timestamp(6)
-  lastUsed  DateTime? @db.Timestamp(6)
+  lastUsed  DateTime  @db.Timestamp(6)
   updatedAt DateTime? @db.Timestamp(6)
   createdAt DateTime? @db.Timestamp(6)
   apps      apps      @relation(fields: [appId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Keys_appId_fkey")
