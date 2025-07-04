@@ -8,13 +8,13 @@ import EditDeleteAppButtons from "../components/buttons/EditDeleteAppButtons";
 import CreateAPIKeyButton from "../components/buttons/CreateAPIKeyButton";
 
 export default async function AppsPage() {
-  const userId = await getSession();
+  const session = await getSession();
 
-  if (!userId) {
+  if (!session) {
     redirect("/login");
   }
 
-  const apps = await fetchAppsWithKeysAction(userId);
+  const apps = await fetchAppsWithKeysAction(session.userId);
 
   return (
     <div className="flex flex-col gap-6">

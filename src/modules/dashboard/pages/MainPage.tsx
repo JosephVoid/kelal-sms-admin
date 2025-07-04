@@ -9,13 +9,13 @@ import fetchUserAccountAction from "../lib/actions/fetchUserAccount.action";
 import fetchUserAction from "../lib/actions/fetchUser.action";
 
 export default async function MainPage() {
-  const userId = await getSession();
+  const session = await getSession();
 
-  if (!userId) {
+  if (!session) {
     redirect("/login"); // or show a 401 page
   }
-  const user = await fetchUserAction(userId);
-  const userAccount = await fetchUserAccountAction(userId);
+  const user = await fetchUserAction(session.userId);
+  const userAccount = await fetchUserAccountAction(session.userId);
   const apps =
     userAccount && (await fetchAccountAppsAction(userAccount?.accountId));
 

@@ -3,9 +3,9 @@ import LoginForm from "../components/LoginForm";
 import { getSession } from "../lib/helpers/session";
 
 export default async function LoginPage() {
-  const userId = await getSession();
+  const session = await getSession();
 
-  if (userId) {
+  if (session?.userId) {
     redirect("/dashboard");
   }
 

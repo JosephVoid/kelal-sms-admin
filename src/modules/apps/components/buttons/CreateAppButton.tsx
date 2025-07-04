@@ -5,10 +5,10 @@ import { Button } from "@chakra-ui/react";
 import CreateEditAppForm from "../forms/CreateEditAppForm";
 
 export default function CreateAppButton() {
-  const { openModal } = useGlobalModal();
+  const { openModal, closeModal } = useGlobalModal();
 
   function handleCreateApp() {
-    openModal(<CreateEditAppForm />);
+    openModal(<CreateEditAppForm mode="ADD" onFinish={closeModal} />);
   }
 
   return (

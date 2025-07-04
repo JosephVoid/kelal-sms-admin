@@ -3,6 +3,7 @@
 import { logoutAction } from "@/modules/auth/lib/actions/logout.action";
 import { Flex, Text, IconButton } from "@chakra-ui/react";
 import { toaster } from "../ui/toaster";
+import { useAuth } from "@/utils/providers/AuthProvider";
 
 export function SidebarItem({
   icon,
@@ -13,13 +14,17 @@ export function SidebarItem({
   label: string;
   isLogOut?: boolean;
 }) {
+  const auth = useAuth();
+
   const handleClick = async () => {
     if (isLogOut) {
       const logout = await logoutAction();
-      logout.success &&
+      if (logout.success) {
+        auth.logUserOut();
         toaster.create({
           title: "Logged Out",
         });
+      }
     }
   };
 

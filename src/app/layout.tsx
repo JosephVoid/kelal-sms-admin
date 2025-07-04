@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Provider } from "@/components/ui/provider";
 import { ModalProvider } from "@/components/modal/modalProvider";
+import { AuthProvider } from "@/utils/providers/AuthProvider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,7 +18,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body>
         <Provider>
-          <ModalProvider>{children}</ModalProvider>
+          <AuthProvider>
+            <ModalProvider>{children}</ModalProvider>
+          </AuthProvider>
         </Provider>
       </body>
     </html>

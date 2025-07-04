@@ -1,11 +1,14 @@
 import { cookies } from "next/headers";
 import { SignJWT, jwtVerify } from "jose";
+import type { useraccounts } from "@/prisma/client";
 
 const secret = new TextEncoder().encode(process.env.JWT_SECRET!);
+type Role = Pick<useraccounts, "role">;
+
 export const cookieName = "session_token";
 
-export async function createSession(userId: string) {
-  const token = await new SignJWT({ userId })
+export async function createSession(userId: string, role: Role["role"]) {
+  const token = await new SignJWT({ userId, role })
     .setProtectedHeader({ alg: "HS256" })
     .setExpirationTime("7d")
     .sign(secret);
@@ -19,7 +22,10 @@ export async function createSession(userId: string) {
   });
 }
 
-export async function getSession() {
+export async function getSession(): Promise<{
+  userId: string;
+  role: Role;
+} | null> {
   const _cookies = await cookies();
   const cookie = _cookies.get(cookieName);
 
@@ -27,7 +33,7 @@ export async function getSession() {
 
   try {
     const { payload } = await jwtVerify(cookie.value, secret);
-    return payload.userId as string;
+    return { userId: payload.userId as string, role: payload.role as Role };
   } catch {
     return null;
   }

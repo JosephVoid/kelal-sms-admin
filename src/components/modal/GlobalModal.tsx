@@ -20,7 +20,7 @@ export function GlobalModal({
       <Portal>
         <Dialog.Backdrop />
         <Dialog.Positioner>
-          <Dialog.Content p={3}>{children}</Dialog.Content>
+          <Dialog.Content p={5}>{children}</Dialog.Content>
         </Dialog.Positioner>
       </Portal>
     </Dialog.Root>

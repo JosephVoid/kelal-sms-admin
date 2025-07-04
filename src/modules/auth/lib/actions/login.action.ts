@@ -6,7 +6,11 @@ import bcrypt from "bcryptjs";
 
 export async function loginAction(
   formData: FormData
-): Promise<{ error?: string; success: boolean }> {
+): Promise<{
+  error?: string;
+  success: boolean;
+  user?: Awaited<ReturnType<typeof getUserByEmail>>;
+}> {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
 
@@ -24,7 +28,7 @@ export async function loginAction(
     return { error: "Invalid credentials.", success: false };
   }
 
-  await createSession(user.id);
+  await createSession(user.id, user.useraccounts[0].role);
 
-  return { success: true };
+  return { success: true, user: user };
 }

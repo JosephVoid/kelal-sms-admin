@@ -5,8 +5,10 @@ import { Box, Button, Input, Heading, VStack } from "@chakra-ui/react";
 import { useState } from "react";
 import { loginAction } from "../lib/actions/login.action";
 import { redirect } from "next/navigation";
+import { useAuth } from "@/utils/providers/AuthProvider";
 
 export default function LoginForm() {
+  const auth = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -19,8 +21,11 @@ export default function LoginForm() {
 
     const login = await loginAction(formData);
 
-    // Simulate login logic
     if (login.success) {
+      auth.setUser({
+        userId: login.user!.id,
+        role: login.user!.useraccounts[0].role,
+      });
       toaster.create({
         title: "Login successful.",
         description: "Welcome back!",

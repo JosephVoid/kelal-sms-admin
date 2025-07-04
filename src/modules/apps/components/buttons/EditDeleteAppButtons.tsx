@@ -11,7 +11,9 @@ export default function EditDeleteAppButtons() {
   const { openModal } = useGlobalModal();
 
   function handleClick(click: "EDIT" | "DELETE") {
-    openModal(click === "EDIT" ? <CreateEditAppForm /> : <DeleteAppWarn />);
+    openModal(
+      click === "EDIT" ? <CreateEditAppForm mode="EDIT" /> : <DeleteAppWarn />
+    );
   }
 
   return (
