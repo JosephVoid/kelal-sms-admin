@@ -13,15 +13,12 @@ export default function CreateEditAppForm({
   onFinish,
 }: {
   mode: "ADD" | "EDIT";
-  onFinish?: () => void;
+  onFinish: () => void;
 }) {
   const auth = useAuth();
   const router = useRouter();
 
-  const { run, loading } = useAsync<
-    ReturnType<typeof createAppAction>,
-    [string, string]
-  >(createAppAction, []);
+  const { run, loading } = useAsync(createAppAction);
 
   const [name, setName] = React.useState("");
 
@@ -30,7 +27,7 @@ export default function CreateEditAppForm({
     const result = await run(auth.user!.userId, name);
     if (result?.success) {
       toaster.success({ title: "App Created!" });
-      onFinish && onFinish();
+      onFinish();
       router.refresh();
     } else {
       toaster.error({ title: "Err: " + result?.error });

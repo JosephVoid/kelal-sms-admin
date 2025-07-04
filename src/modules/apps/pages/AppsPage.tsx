@@ -37,7 +37,7 @@ export default async function AppsPage() {
                 <Card.Body className="flex flex-col gap-4">
                   <div className="flex justify-between items-center">
                     <Text fontWeight={"bold"}>{app.name}</Text>
-                    <EditDeleteAppButtons />
+                    <EditDeleteAppButtons appId={app.id} />
                   </div>
                   <div className="flex flex-col gap-4">
                     <Text>API Keys</Text>

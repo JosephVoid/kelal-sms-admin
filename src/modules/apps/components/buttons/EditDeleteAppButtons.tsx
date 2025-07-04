@@ -7,12 +7,16 @@ import { PiPencil } from "react-icons/pi";
 import CreateEditAppForm from "../forms/CreateEditAppForm";
 import DeleteAppWarn from "../forms/DeleteAppWarn";
 
-export default function EditDeleteAppButtons() {
-  const { openModal } = useGlobalModal();
+export default function EditDeleteAppButtons({ appId }: { appId: string }) {
+  const { openModal, closeModal } = useGlobalModal();
 
   function handleClick(click: "EDIT" | "DELETE") {
     openModal(
-      click === "EDIT" ? <CreateEditAppForm mode="EDIT" /> : <DeleteAppWarn />
+      click === "EDIT" ? (
+        <CreateEditAppForm mode="EDIT" onFinish={closeModal} />
+      ) : (
+        <DeleteAppWarn appId={appId} onFinish={closeModal} />
+      )
     );
   }
 

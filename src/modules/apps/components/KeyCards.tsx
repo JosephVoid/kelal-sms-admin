@@ -8,7 +8,7 @@ import { useGlobalModal } from "@/components/modal/modalProvider";
 import DeleteAPIKeyWarn from "./forms/DeleteAPIKeyWarn";
 
 export default function KeyCards(props: IKeys) {
-  const { openModal } = useGlobalModal();
+  const { openModal, closeModal } = useGlobalModal();
 
   function handleCopy() {
     navigator.clipboard
@@ -17,7 +17,7 @@ export default function KeyCards(props: IKeys) {
   }
 
   function handleAPIKeyDelete() {
-    openModal(<DeleteAPIKeyWarn />);
+    openModal(<DeleteAPIKeyWarn apiKeyId={props.id} onFinish={closeModal} />);
   }
 
   return (

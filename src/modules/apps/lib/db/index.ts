@@ -90,3 +90,15 @@ export async function createKey(
     },
   });
 }
+
+export async function deleteAppById(appId: string) {
+  return prisma.apps.delete({
+    where: { id: appId },
+  });
+}
+
+export async function deleteKeyById(keyId: string) {
+  return prisma.keys.delete({
+    where: { id: keyId },
+  });
+}
