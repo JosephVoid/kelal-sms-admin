@@ -4,9 +4,7 @@ import { getUserByEmail } from "../db/user";
 import { createSession } from "../helpers/session";
 import bcrypt from "bcryptjs";
 
-export async function loginAction(
-  formData: FormData
-): Promise<{
+export async function loginAction(formData: FormData): Promise<{
   error?: string;
   success: boolean;
   user?: Awaited<ReturnType<typeof getUserByEmail>>;
@@ -28,7 +26,11 @@ export async function loginAction(
     return { error: "Invalid credentials.", success: false };
   }
 
-  await createSession(user.id, user.useraccounts[0].role);
+  await createSession(
+    user.id,
+    user.useraccounts[0].role,
+    user.useraccounts[0].accountId
+  );
 
   return { success: true, user: user };
 }

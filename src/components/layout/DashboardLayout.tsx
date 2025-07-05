@@ -13,6 +13,7 @@ import Link from "next/link";
 import { logoutAction } from "@/modules/auth/lib/actions/logout.action";
 import { SidebarItem } from "./SideBarItem";
 import { Toaster } from "../ui/toaster";
+import DashboardHeading from "../shared/DashboardHeading";
 
 export default function DashboardLayout({
   children,
@@ -30,7 +31,7 @@ export default function DashboardLayout({
         display="flex"
         flexDirection="column"
         justifyContent="space-between"
-        className="hidden"
+        className="invisible"
       >
         <div>
           <Text fontSize="xl" fontWeight="bold" mb={8} px={2}>
@@ -51,7 +52,7 @@ export default function DashboardLayout({
         </div>
       </Box>
       <Box
-        w="20%"
+        w="15%"
         bg="blue.600"
         color="white"
         p={4}
@@ -80,9 +81,7 @@ export default function DashboardLayout({
       </Box>
       {/* Main Content */}
       <Box flex="1" p={6}>
-        <Heading size="md" mb={4}>
-          Dashboard
-        </Heading>
+        <DashboardHeading />
         {children}
         <Toaster />
       </Box>

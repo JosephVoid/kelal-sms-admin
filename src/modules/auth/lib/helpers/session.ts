@@ -7,8 +7,12 @@ type Role = Pick<useraccounts, "role">;
 
 export const cookieName = "session_token";
 
-export async function createSession(userId: string, role: Role["role"]) {
-  const token = await new SignJWT({ userId, role })
+export async function createSession(
+  userId: string,
+  role: Role["role"],
+  accountId: string
+) {
+  const token = await new SignJWT({ userId, role, accountId })
     .setProtectedHeader({ alg: "HS256" })
     .setExpirationTime("7d")
     .sign(secret);
@@ -25,6 +29,7 @@ export async function createSession(userId: string, role: Role["role"]) {
 export async function getSession(): Promise<{
   userId: string;
   role: Role;
+  accountId: string;
 } | null> {
   const _cookies = await cookies();
   const cookie = _cookies.get(cookieName);
@@ -33,7 +38,11 @@ export async function getSession(): Promise<{
 
   try {
     const { payload } = await jwtVerify(cookie.value, secret);
-    return { userId: payload.userId as string, role: payload.role as Role };
+    return {
+      userId: payload.userId as string,
+      role: payload.role as Role,
+      accountId: payload.accountId as string,
+    };
   } catch {
     return null;
   }

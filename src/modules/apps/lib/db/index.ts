@@ -26,7 +26,13 @@ export async function getUserAppsWithKeys(userId: string) {
                   lastUsed: true,
                   createdAt: true,
                 },
+                orderBy: {
+                  createdAt: "desc",
+                },
               },
+            },
+            orderBy: {
+              createdAt: "desc",
             },
           },
         },

@@ -11,11 +11,11 @@ export default async function AppCard(props: IAppCard) {
   const statusChart = await fetchMsgStatusAction(props.appId);
 
   return (
-    <>
+    <div className="!mb-4">
       <Card.Root>
         <Card.Body>
           <Card.Title>{props.name}</Card.Title>
-          <div className="w-full flex">
+          <div className="w-full flex !p-3">
             <div className="w-1/2">
               <TimeChart data={timeChart} />
             </div>
@@ -25,6 +25,6 @@ export default async function AppCard(props: IAppCard) {
           </div>
         </Card.Body>
       </Card.Root>
-    </>
+    </div>
   );
 }

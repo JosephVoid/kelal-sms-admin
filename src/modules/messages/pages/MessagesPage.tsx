@@ -1,13 +1,16 @@
 import { Text } from "@chakra-ui/react";
-import { DataGrid, GridRowsProp, GridColDef } from "@mui/x-data-grid";
+import DataTable from "../components/DataTable";
+import { getSession } from "@/modules/auth/lib/helpers/session";
+import { redirect } from "next/navigation";
 
-export default function MessagesPage() {
-  const Columns: GridColDef[] = [
-    {
-      field: "id",
-      headerName: "ID",
-    },
-  ];
+export default async function MessagesPage() {
+  const session = await getSession();
+
+  if (!session) {
+    redirect("/login"); // or show a 401 page
+  }
+
+  const accountId = session.accountId;
 
   return (
     <div className="flex flex-col gap-6">
@@ -19,9 +22,7 @@ export default function MessagesPage() {
           ✨ Checkout the messages sent from your apps ✨
         </Text>
       </div>
-      <div>
-        <DataGrid rows={[]} columns={Columns} />
-      </div>
+      <DataTable accountId={accountId} />
     </div>
   );
 }

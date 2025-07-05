@@ -7,26 +7,38 @@ import React from "react";
 import { useAsync } from "@/utils/useAsync";
 import { toaster } from "@/components/ui/toaster";
 import { useRouter } from "next/navigation";
+import { editAppAction } from "../../lib/actions/editApp.action";
 
 export default function CreateEditAppForm({
   mode,
   onFinish,
+  name: presetName,
+  appId,
 }: {
   mode: "ADD" | "EDIT";
   onFinish: () => void;
+  name: string;
+  appId?: string;
 }) {
   const auth = useAuth();
   const router = useRouter();
 
   const { run, loading } = useAsync(createAppAction);
 
-  const [name, setName] = React.useState("");
+  const { run: runEdit, loading: editLoading } = useAsync(editAppAction);
+
+  const [name, setName] = React.useState(presetName);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const result = await run(auth.user!.userId, name);
+    const result =
+      mode === "ADD"
+        ? await run(auth.user!.userId, name)
+        : await runEdit({ userId: auth.user!.userId, appId: appId!, name });
     if (result?.success) {
-      toaster.success({ title: "App Created!" });
+      toaster.success({
+        title: `App ${mode === "ADD" ? "Created" : "Edited"}!`,
+      });
       onFinish();
       router.refresh();
     } else {
@@ -55,7 +67,7 @@ export default function CreateEditAppForm({
               This name will be seen by your SMS receivers
             </Field.HelperText>
           </Field.Root>
-          <Button disabled={loading} type="submit">
+          <Button disabled={loading || editLoading} type="submit">
             {mode === "ADD" ? "Create" : "Edit"} App
           </Button>
         </form>
