@@ -41,10 +41,14 @@ export default async function AppsPage() {
                   </div>
                   <div className="flex flex-col gap-4">
                     <Text>API Keys</Text>
-                    {app.keys.map((key) => (
-                      <KeyCards key={key.id} {...key} />
-                    ))}
-                    <CreateAPIKeyButton />
+                    {app.keys.length === 0 ? (
+                      <Text className="p-5 opacity-40" fontWeight={"light"}>
+                        No Keys
+                      </Text>
+                    ) : (
+                      app.keys.map((key) => <KeyCards key={key.id} {...key} />)
+                    )}
+                    <CreateAPIKeyButton appId={app.id} />
                   </div>
                 </Card.Body>
               </Card.Root>

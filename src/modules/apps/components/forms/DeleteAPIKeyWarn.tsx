@@ -21,7 +21,7 @@ export default function DeleteAPIKeyWarn({
   async function handleDelete() {
     const result = await run(apiKeyId);
     if (result.success) {
-      toaster.success({ title: "App Deleted!" });
+      toaster.success({ title: "API Key Deleted!" });
       onFinish();
       router.refresh();
     } else toaster.error({ title: "Err" + result.error });

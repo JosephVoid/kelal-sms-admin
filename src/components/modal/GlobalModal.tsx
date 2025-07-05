@@ -1,6 +1,6 @@
 "use client";
 
-import { Dialog, Portal } from "@chakra-ui/react";
+import { CloseButton, Dialog, Portal } from "@chakra-ui/react";
 
 export function GlobalModal({
   open,
@@ -20,7 +20,12 @@ export function GlobalModal({
       <Portal>
         <Dialog.Backdrop />
         <Dialog.Positioner>
-          <Dialog.Content p={5}>{children}</Dialog.Content>
+          <Dialog.Content p={5}>
+            {children}
+            <Dialog.CloseTrigger asChild>
+              <CloseButton size="sm" />
+            </Dialog.CloseTrigger>
+          </Dialog.Content>
         </Dialog.Positioner>
       </Portal>
     </Dialog.Root>

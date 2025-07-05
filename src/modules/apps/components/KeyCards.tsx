@@ -10,12 +10,6 @@ import DeleteAPIKeyWarn from "./forms/DeleteAPIKeyWarn";
 export default function KeyCards(props: IKeys) {
   const { openModal, closeModal } = useGlobalModal();
 
-  function handleCopy() {
-    navigator.clipboard
-      .writeText(props.keyHash)
-      .then(() => toaster.info({ title: "API Key copied!" }));
-  }
-
   function handleAPIKeyDelete() {
     openModal(<DeleteAPIKeyWarn apiKeyId={props.id} onFinish={closeModal} />);
   }
@@ -29,14 +23,7 @@ export default function KeyCards(props: IKeys) {
               {props.name}
             </Text>
             <div className="w-1/2">
-              <InputGroup
-                endAddon={
-                  <FaCopy
-                    className="hover:cursor-pointer"
-                    onClick={handleCopy}
-                  />
-                }
-              >
+              <InputGroup>
                 <Input
                   disabled
                   value={"123456789012345678901234567890"}
