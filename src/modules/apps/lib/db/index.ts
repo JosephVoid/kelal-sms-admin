@@ -98,6 +98,10 @@ export async function createKey(
 }
 
 export async function deleteAppById(appId: string) {
+  await prisma.keys.deleteMany({
+    where: { appId },
+  });
+
   return prisma.apps.delete({
     where: { id: appId },
   });
