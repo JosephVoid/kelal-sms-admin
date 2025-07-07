@@ -29,10 +29,12 @@ export async function getMessagesTimeSeries(appId: string) {
   return rawData;
 }
 
-export async function getAccountApps(accountId: string) {
+export async function getAccountApps(accountId: string | string[]) {
   try {
     const res = await prisma.apps.findMany({
-      where: { accountId: accountId },
+      where: {
+        accountId: Array.isArray(accountId) ? { in: accountId } : accountId,
+      },
     });
     return res;
   } catch (error) {
@@ -40,9 +42,9 @@ export async function getAccountApps(accountId: string) {
   }
 }
 
-export async function getUserAccount(userId: string) {
+export async function getUserAccounts(userId: string) {
   try {
-    return await prisma.useraccounts.findFirst({
+    return await prisma.useraccounts.findMany({
       where: { userId },
       include: { accounts: true },
     });

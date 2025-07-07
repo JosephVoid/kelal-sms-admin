@@ -26,10 +26,14 @@ export async function loginAction(formData: FormData): Promise<{
     return { error: "Invalid credentials.", success: false };
   }
 
+  const isAdmin = user.useraccounts.every(
+    (account) => account.role === "admin"
+  );
+
   await createSession(
     user.id,
-    user.useraccounts[0].role,
-    user.useraccounts[0].accountId
+    isAdmin ? "admin" : user.useraccounts[0].role,
+    isAdmin ? undefined : user.useraccounts[0].accountId
   );
 
   return { success: true, user: user };

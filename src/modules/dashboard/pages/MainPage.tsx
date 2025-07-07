@@ -7,6 +7,31 @@ import { redirect } from "next/navigation";
 import fetchAccountAppsAction from "../lib/actions/fetchAccountApps.action";
 import fetchUserAccountAction from "../lib/actions/fetchUserAccount.action";
 import fetchUserAction from "../lib/actions/fetchUser.action";
+import { $Enums } from "@/prisma/index";
+
+async function fetchPageData(userId: string, role: $Enums.roles) {
+  const user = await fetchUserAction(userId);
+  const userAccount = await fetchUserAccountAction(userId);
+
+  const apps = await fetchAccountAppsAction(
+    role === "owner"
+      ? userAccount[0]?.accountId
+      : userAccount.map((account) => account.accountId)
+  );
+
+  const balance =
+    role === "owner"
+      ? userAccount[0].accounts.balance
+      : userAccount.reduce((acc, currentVal) => {
+          return acc + currentVal.accounts.balance;
+        }, 0);
+
+  return {
+    user,
+    balance,
+    apps,
+  };
+}
 
 export default async function MainPage() {
   const session = await getSession();
@@ -14,10 +39,11 @@ export default async function MainPage() {
   if (!session) {
     redirect("/login"); // or show a 401 page
   }
-  const user = await fetchUserAction(session.userId);
-  const userAccount = await fetchUserAccountAction(session.userId);
-  const apps =
-    userAccount && (await fetchAccountAppsAction(userAccount?.accountId));
+
+  const { user, balance, apps } = await fetchPageData(
+    session.userId,
+    session.role
+  );
 
   return (
     <div>
@@ -40,7 +66,7 @@ export default async function MainPage() {
             </div>
           </div>
         </div>
-        <BalanceCard balance={userAccount?.accounts.balance ?? 0} />
+        <BalanceCard balance={balance} />
       </div>
     </div>
   );

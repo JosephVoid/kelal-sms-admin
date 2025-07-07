@@ -1,7 +1,7 @@
 "use server";
 
-import { getUserAccount } from "../db";
+import { getUserAccounts } from "../db";
 
 export default async function fetchUserAccountAction(userId: string) {
-  return await getUserAccount(userId);
+  return (await getUserAccounts(userId)) ?? [];
 }

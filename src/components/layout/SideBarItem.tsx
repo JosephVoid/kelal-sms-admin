@@ -34,7 +34,7 @@ export function SidebarItem({
       gap={3}
       px={2}
       borderRadius="md"
-      _hover={{ bg: "blue.700" }}
+      _hover={{ bg: "blackAlpha.700" }}
       w="full"
       cursor="pointer"
       onClick={handleClick}

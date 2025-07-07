@@ -10,7 +10,7 @@ export const cookieName = "session_token";
 export async function createSession(
   userId: string,
   role: Role["role"],
-  accountId: string
+  accountId?: string
 ) {
   const token = await new SignJWT({ userId, role, accountId })
     .setProtectedHeader({ alg: "HS256" })
@@ -28,8 +28,8 @@ export async function createSession(
 
 export async function getSession(): Promise<{
   userId: string;
-  role: Role;
-  accountId: string;
+  role: Role["role"];
+  accountId?: string;
 } | null> {
   const _cookies = await cookies();
   const cookie = _cookies.get(cookieName);
@@ -40,8 +40,8 @@ export async function getSession(): Promise<{
     const { payload } = await jwtVerify(cookie.value, secret);
     return {
       userId: payload.userId as string,
-      role: payload.role as Role,
-      accountId: payload.accountId as string,
+      role: payload.role as Role["role"],
+      accountId: (payload?.accountId as string) ?? null,
     };
   } catch {
     return null;

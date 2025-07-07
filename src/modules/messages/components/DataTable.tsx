@@ -4,7 +4,7 @@ import { useAsync } from "@/utils/useAsync";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { fetchAllMessagesAction } from "../lib/actions/fetchMessages.action";
 
-export default function DataTable({ accountId }: { accountId: string }) {
+export default function DataTable({ accountId }: { accountId?: string }) {
   const Columns: GridColDef[] = [
     {
       field: "id",
