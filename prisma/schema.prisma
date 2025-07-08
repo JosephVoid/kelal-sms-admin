@@ -9,7 +9,7 @@ datasource db {
 }
 
 model accounts {
-  id           String         @id(map: "Accounts_pkey") @db.Uuid
+  id           String         @id(map: "Accounts_pkey") @default(uuid()) @db.Uuid
   name         String         @db.VarChar
   balance      Float
   updatedAt    DateTime?      @db.Timestamp(6)
@@ -24,7 +24,7 @@ model apps {
   accountId String     @db.Uuid
   updatedAt DateTime?  @db.Timestamp(6)
   createdAt DateTime?  @db.Timestamp(6)
-  name      String     @db.VarChar(200)
+  name      String?    @db.VarChar(200)
   accounts  accounts   @relation(fields: [accountId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Apps_accountId_fkey")
   keys      keys[]
   logs      logs[]
@@ -99,6 +99,10 @@ model providers {
   costPerMessage Float
   updatedAt      DateTime?  @db.Timestamp(6)
   createdAt      DateTime?  @db.Timestamp(6)
+  failCount      BigInt?    @default(0)
+  successField   String?    @db.VarChar
+  successValue   String?    @db.VarChar
+  messageIdField String?    @db.VarChar
   logs           logs[]
   messages       messages[]
 }
@@ -114,7 +118,7 @@ model services {
 }
 
 model useraccounts {
-  id        String    @id(map: "UserAccounts_pkey") @db.Uuid
+  id        String    @id(map: "UserAccounts_pkey") @default(uuid()) @db.Uuid
   userId    String    @db.Uuid
   accountId String    @db.Uuid
   role      roles
@@ -126,14 +130,22 @@ model useraccounts {
 }
 
 model users {
-  id           String         @id(map: "Users_pkey") @db.Uuid
+  id           String         @id(map: "Users_pkey") @default(uuid()) @db.Uuid
   fullName     String         @db.VarChar
   email        String         @unique @db.VarChar
   password     String         @db.VarChar
   updatedAt    DateTime?      @db.Timestamp(6)
   createdAt    DateTime?      @db.Timestamp(6)
+  phone        String?        @db.VarChar
   logs         logs[]
   useraccounts useraccounts[]
+}
+
+model otp {
+  id        String    @id @default(uuid()) @db.Uuid
+  otp       String?   @db.VarChar
+  expiresOn DateTime? @db.Time(6)
+  email     String?   @db.VarChar
 }
 
 enum roles {

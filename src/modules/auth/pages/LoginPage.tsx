@@ -2,6 +2,8 @@ import { redirect } from "next/navigation";
 import LoginForm from "../components/LoginForm";
 import { getSession } from "../lib/helpers/session";
 import { Provider } from "@/components/ui/provider";
+import { FaArrowLeft } from "react-icons/fa";
+import Link from "next/link";
 
 export default async function LoginPage() {
   const session = await getSession();
@@ -12,6 +14,11 @@ export default async function LoginPage() {
 
   return (
     <div className="flex justify-center items-center w-full h-screen">
+      <div className="absolute top-10 left-10">
+        <Link href={"/"}>
+          <FaArrowLeft />
+        </Link>
+      </div>
       <Provider>
         <LoginForm />
       </Provider>

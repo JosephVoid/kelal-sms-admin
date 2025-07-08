@@ -1,6 +1,6 @@
 "use server";
 
-import { getUserByEmail } from "../db/user";
+import { getUserByEmail } from "../db";
 import { createSession } from "../helpers/session";
 import bcrypt from "bcryptjs";
 

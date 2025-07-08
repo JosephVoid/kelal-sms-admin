@@ -1,32 +1,48 @@
 "use client";
 
 import React from "react";
+import { CreateUserInput } from "@/modules/auth/types";
+import Spinner from "@/components/shared/spinner";
 
 export default function SignUpBox({
   onContinue,
+  loading,
 }: {
   onContinue: ({
     name,
     email,
     phone,
     password,
-  }: {
-    [key: string]: string;
-  }) => void;
+    accountName,
+  }: CreateUserInput) => void;
+  loading: boolean;
 }) {
   const [form, setForm] = React.useState({
     name: "",
     email: "",
     phone: "",
     password: "",
+    accountName: "",
+  });
+  const [formError, setFormError] = React.useState({
+    email: false,
+    phone: false,
   });
 
   function handleFormChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setForm({ ...form, [e.target.name]: [e.target.value] });
+    setForm({ ...form, [e.target.name]: e.target.value });
   }
 
   function handleContinue() {
-    onContinue(form);
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+    const ethiopianPhoneRegex = /^\+251[79]\d{8}$/;
+
+    console.log({ form });
+    if (!emailRegex.test(form.email))
+      setFormError({ ...formError, email: true });
+    else if (!ethiopianPhoneRegex.test(form.phone))
+      setFormError({ email: false, phone: true });
+    else onContinue(form);
   }
 
   return (
@@ -39,6 +55,7 @@ export default function SignUpBox({
           placeholder="Name"
           className="w-full rounded border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-gray-500"
           onChange={handleFormChange}
+          value={form.name}
         />
       </div>
       <div>
@@ -49,7 +66,13 @@ export default function SignUpBox({
           placeholder="Email"
           className="w-full rounded border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-gray-500"
           onChange={handleFormChange}
+          value={form.email}
         />
+        {formError.email && (
+          <label className="block text-xs mt-1 text-red-400">
+            Invalid Email
+          </label>
+        )}
       </div>
       <div>
         <label className="block text-sm font-medium mb-1">Phone</label>
@@ -59,7 +82,13 @@ export default function SignUpBox({
           placeholder="+251 - -- -- -- --"
           className="w-full rounded border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-gray-500"
           onChange={handleFormChange}
+          value={form.phone}
         />
+        {formError.phone && (
+          <label className="block text-xs mt-1 text-red-400">
+            Invalid Phone Number
+          </label>
+        )}
       </div>
       <div>
         <label className="block text-sm font-medium mb-1">Password</label>
@@ -69,13 +98,25 @@ export default function SignUpBox({
           placeholder="Password"
           className="w-full rounded border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-gray-500"
           onChange={handleFormChange}
+          value={form.password}
+        />
+      </div>
+      <div>
+        <label className="block text-sm font-medium mb-1">Account Name</label>
+        <input
+          type="text"
+          name="accountName"
+          placeholder="Account Name"
+          className="w-full rounded border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-gray-500"
+          onChange={handleFormChange}
+          value={form.accountName}
         />
       </div>
       <button
-        className="w-full bg-black text-white py-2 rounded hover:bg-gray-800"
+        className="w-full bg-black text-white py-2 rounded hover:bg-gray-800 cursor-pointer"
         onClick={handleContinue}
       >
-        Continue
+        {loading ? <Spinner /> : "Continue"}
       </button>
     </div>
   );

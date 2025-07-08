@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   motion,
   useMotionValue,
@@ -11,9 +11,21 @@ import Logo from "./assets/logo.svg";
 import Image from "next/image";
 import SignUpBox from "./components/signup-box";
 import OTPCodeBox from "./components/otp-code-box";
+import { useAsync } from "@/utils/useAsync";
+import { createUserAndAccount } from "../auth/lib/actions/create-user-and-account.action";
+import { sendEmailOtp } from "../auth/lib/actions/send-email-otp.action";
+import { verifyEmailOtp } from "../auth/lib/actions/verify-email-otp.action";
+import { CreateUserInput } from "../auth/types";
+import { toaster } from "@/components/ui/toaster";
+import { useAuth } from "@/utils/providers/AuthProvider";
+import { redirect } from "next/navigation";
+import { useToast } from "./lib/toastContext";
+import Link from "next/link";
 
 export default function LandingPage() {
   const [showForm, setShowForm] = useState<"SIGNUP" | "OTP" | null>(null);
+  const [userCreationData, setUserCreation] =
+    React.useState<CreateUserInput | null>(null);
 
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -32,6 +44,40 @@ export default function LandingPage() {
     window.addEventListener("mousemove", moveGlow);
     return () => window.removeEventListener("mousemove", moveGlow);
   }, [mouseX, mouseY]);
+
+  const auth = useAuth();
+  const { showToast } = useToast();
+
+  const { run: createUserAccount, loading: createUserAccountLoading } =
+    useAsync(createUserAndAccount);
+  const { run: sendOtp, loading: sendOtpLoading } = useAsync(sendEmailOtp);
+  const { run: verifyOtp, loading: verifyOtpLoading } =
+    useAsync(verifyEmailOtp);
+
+  const handleSendOTP = async (creationData: CreateUserInput) => {
+    setUserCreation(creationData);
+    const result = await sendOtp(creationData.email);
+    if (result.success) {
+      showToast("OTP Sent!", "success");
+      setShowForm("OTP");
+    }
+  };
+
+  const handleUserCreation = async (otp: string) => {
+    const result = await verifyOtp(otp, userCreationData!.email);
+    if (result.success) {
+      const creationResult = await createUserAccount(userCreationData!);
+      if (creationResult.success) {
+        showToast("Account Created!", "success");
+        auth.setUser({ userId: creationResult.user?.id!, role: "owner" });
+        redirect("/dashboard");
+      } else {
+        showToast(creationResult.message ?? "Error", "error");
+      }
+    } else {
+      showToast(result.message ?? "Error", "error");
+    }
+  };
 
   return (
     <main className="relative min-h-screen bg-gray-100 text-black overflow-hidden">
@@ -54,7 +100,7 @@ export default function LandingPage() {
             <Image src={Logo} alt="Logo" height={50} width={50} />
           </div>
           <button className="text-sm px-4 py-2 rounded hover:outline-1 hover:outline-gray-500 transition-all cursor-pointer">
-            Sign In
+            <Link href={"/login"}>Sign In</Link>
           </button>
         </header>
 
@@ -78,9 +124,14 @@ export default function LandingPage() {
         </div>
 
         {showForm === "SIGNUP" && (
-          <SignUpBox onContinue={() => setShowForm("OTP")} />
+          <SignUpBox onContinue={handleSendOTP} loading={sendOtpLoading} />
         )}
-        {showForm === "OTP" && <OTPCodeBox onContinue={() => null} />}
+        {showForm === "OTP" && (
+          <OTPCodeBox
+            onContinue={handleUserCreation}
+            loading={verifyOtpLoading || createUserAccountLoading}
+          />
+        )}
 
         <section className="text-4xl leading-tight sm:text-4xl flex justify-between my-24 items-center">
           <div className="text-9xl font-extrabold">Steps</div>

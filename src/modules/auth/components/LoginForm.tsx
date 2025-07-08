@@ -6,6 +6,8 @@ import { useState } from "react";
 import { loginAction } from "../lib/actions/login.action";
 import { redirect } from "next/navigation";
 import { useAuth } from "@/utils/providers/AuthProvider";
+import Image from "next/image";
+import Logo from "@/modules/landing/assets/logo.svg";
 
 export default function LoginForm() {
   const auth = useAuth();
@@ -44,8 +46,11 @@ export default function LoginForm() {
 
   return (
     <Box maxW="400px" className="w-1/3" p={8} borderRadius="lg">
-      <Heading mb={6} textAlign="center">
-        Login
+      <div className="flex justify-center mb-5">
+        <Image src={Logo} alt="Logo" height={100} width={100} />
+      </div>
+      <Heading mt={6} mb={6} textAlign="center">
+        Sign In
       </Heading>
 
       <form onSubmit={handleSubmit}>
