@@ -9,9 +9,11 @@ import {
 } from "framer-motion";
 import Logo from "./assets/logo.svg";
 import Image from "next/image";
+import SignUpBox from "./components/signup-box";
+import OTPCodeBox from "./components/otp-code-box";
 
 export default function LandingPage() {
-  const [showForm, setShowForm] = useState(false);
+  const [showForm, setShowForm] = useState<"SIGNUP" | "OTP" | null>(null);
 
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -51,7 +53,9 @@ export default function LandingPage() {
           <div className="text-lg font-bold">
             <Image src={Logo} alt="Logo" height={50} width={50} />
           </div>
-          <button className="text-sm underline">Sign In</button>
+          <button className="text-sm px-4 py-2 rounded hover:outline-1 hover:outline-gray-500 transition-all cursor-pointer">
+            Sign In
+          </button>
         </header>
 
         <section className="space-y-0 mb-10 text-4xl font-extrabold leading-tight sm:text-6xl">
@@ -61,87 +65,36 @@ export default function LandingPage() {
           <div>💬 Send the SMS!</div>
         </section>
 
-        <div className="mb-6 w-1/2">
+        <div className="mb-10 w-1/2">
           <p className="text-base sm:text-md font-extralight">
             Create your account now and start sending SMS OTP to your clients
           </p>
           <button
             className="mt-2 rounded bg-black px-4 py-2 text-white hover:bg-gray-800"
-            onClick={() => setShowForm(!showForm)}
+            onClick={() => setShowForm("SIGNUP")}
           >
             Create Account
           </button>
         </div>
 
-        {showForm && (
-          <div className="max-w-md rounded-xl bg-white p-6 shadow-lg space-y-4">
-            <div>
-              <label className="block text-sm font-medium mb-1">Name</label>
-              <input
-                type="text"
-                placeholder="Name"
-                className="w-full rounded border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">Email</label>
-              <input
-                type="email"
-                placeholder="Email"
-                className="w-full rounded border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">Phone</label>
-              <input
-                type="tel"
-                placeholder="Phone"
-                className="w-full rounded border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">Password</label>
-              <input
-                type="password"
-                placeholder="Password"
-                className="w-full rounded border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <button className="w-full bg-black text-white py-2 rounded hover:bg-gray-800">
-              Continue
-            </button>
-          </div>
+        {showForm === "SIGNUP" && (
+          <SignUpBox onContinue={() => setShowForm("OTP")} />
         )}
+        {showForm === "OTP" && <OTPCodeBox onContinue={() => null} />}
 
-        <section className="my-20 py-10 text-center">
-          <div className="grid grid-cols-1 sm:grid-cols-4 gap-y-8 text-base font-medium text-center my-4">
-            {/* Row 1 */}
-            <div className="flex flex-col items-center">
-              <div className="text-8xl mb-2 font-extrabold">✍🏽</div>{" "}
-              {/* Phone emoji for Sign Up */}
-              <div className="font-bold"> Sign Up</div>
-            </div>
-            <div className="flex flex-col items-center">
-              <div className="text-8xl mb-2  font-extrabold">🔑</div>{" "}
-              {/* Key emoji for Password */}
-              <div className="font-bold"> Create API Key</div>
-            </div>
-            {/* Row 2 */}
-            <div className="flex flex-col items-center">
-              <div className="text-8xl mb-2  font-extrabold">⚙️</div>{" "}
-              {/* No entry emoji for No Business License! */}
-              <div className="font-bold"> Send Request</div>
-            </div>
-            <div className="flex flex-col items-center">
-              <div className="text-8xl mb-2  font-extrabold">💬</div>{" "}
-              {/* Gear emoji for Get API Key */}
-              <div className="font-bold"> Receive SMS!</div>
-            </div>
+        <section className="text-4xl leading-tight sm:text-4xl flex justify-between my-24 items-center">
+          <div className="text-9xl font-extrabold">Steps</div>
+          <div>➡️</div>
+          <div className="space-y-2 text-start font-extralight">
+            <div>✍🏽 Create Account</div>
+            <div>🔑 Create API Key</div>
+            <div>⚙️ Send POST Request</div>
+            <div>💬 Users Receive SMS!</div>
           </div>
         </section>
 
-        <section className="space-y-0 mb-10 text-4xl font-extrabold leading-tight sm:text-6xl text-center">
-          That's It
+        <section className="my-24 text-4xl font-extrabold leading-tight sm:text-6xl text-center">
+          ✨ That's It ✨
         </section>
         {/* MODIFIED FOOTER SECTION */}
         <footer className="mt-20 flex justify-between items-center text-xs px-4 py-3 rounded-md">
