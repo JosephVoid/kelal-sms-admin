@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Provider } from "@/components/ui/provider";
 import { ModalProvider } from "@/components/modal/modalProvider";
 import { AuthProvider } from "@/utils/providers/AuthProvider";
 
@@ -17,11 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <Provider>
-          <AuthProvider>
-            <ModalProvider>{children}</ModalProvider>
-          </AuthProvider>
-        </Provider>
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );
