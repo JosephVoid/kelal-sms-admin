@@ -60,9 +60,19 @@ export default async function MainPage() {
               Apps 🖥️
             </Text>
             <div>
-              {apps?.map((app) => (
-                <AppCard key={app.id} name={app?.name ?? ""} appId={app?.id} />
-              ))}
+              {apps.length === 0 ? (
+                <Text className="p-5 opacity-40" fontWeight={"light"}>
+                  No Apps
+                </Text>
+              ) : (
+                apps?.map((app) => (
+                  <AppCard
+                    key={app.id}
+                    name={app?.name ?? ""}
+                    appId={app?.id}
+                  />
+                ))
+              )}
             </div>
           </div>
         </div>

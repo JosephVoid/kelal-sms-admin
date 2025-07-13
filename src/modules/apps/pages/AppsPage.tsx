@@ -44,7 +44,7 @@ export default async function AppsPage() {
                           App ID: {app.id}
                         </Text>
                       </div>
-                      <EditDeleteAppButtons {...app} />
+                      <EditDeleteAppButtons id={app.id} name={app.name!} />
                     </div>
                     <div className="flex flex-col gap-4">
                       <Text>API Keys</Text>
