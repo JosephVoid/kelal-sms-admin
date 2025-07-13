@@ -22,7 +22,7 @@ export default function EditDeleteAppButtons({
         <CreateEditAppForm
           mode="EDIT"
           onFinish={closeModal}
-          name={name}
+          presetName={name}
           appId={id}
         />
       ) : (

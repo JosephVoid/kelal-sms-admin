@@ -12,12 +12,12 @@ import { editAppAction } from "../../lib/actions/editApp.action";
 export default function CreateEditAppForm({
   mode,
   onFinish,
-  name: presetName,
+  presetName,
   appId,
 }: {
   mode: "ADD" | "EDIT";
   onFinish: () => void;
-  name: string;
+  presetName?: string;
   appId?: string;
 }) {
   const auth = useAuth();
@@ -27,7 +27,7 @@ export default function CreateEditAppForm({
 
   const { run: runEdit, loading: editLoading } = useAsync(editAppAction);
 
-  const [name, setName] = React.useState(presetName);
+  const [name, setName] = React.useState(presetName ?? "");
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
