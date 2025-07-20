@@ -6,6 +6,8 @@ import {
   FaComment,
   FaTv,
   FaChartArea,
+  FaCogs,
+  FaBuilding,
 } from "react-icons/fa";
 
 export const SideBarItems = [
@@ -38,6 +40,18 @@ export const SideBarItems = [
     route: "/dashboard/accounts",
     visibleFor: ["admin"],
     icon: <FaThLarge />,
+  },
+  {
+    name: "Services",
+    route: "/dashboard/services",
+    visibleFor: ["admin"],
+    icon: <FaCogs />,
+  },
+  {
+    name: "Providers",
+    route: "/dashboard/providers",
+    visibleFor: ["admin"],
+    icon: <FaBuilding />,
   },
   {
     name: "Logs",
