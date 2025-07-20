@@ -33,8 +33,8 @@ export function SidebarItem({
       align="center"
       gap={3}
       px={2}
-      borderRadius="md"
-      _hover={{ bg: "blackAlpha.700" }}
+      borderRadius="xs"
+      _hover={{ bg: "gray.100" }}
       w="full"
       cursor="pointer"
       onClick={handleClick}
@@ -42,7 +42,7 @@ export function SidebarItem({
       <IconButton
         aria-label={label}
         variant="ghost"
-        color="white"
+        color="blackAlpha.900"
         fontSize="lg"
         _hover={{ bg: "transparent" }}
       >

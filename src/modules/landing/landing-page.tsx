@@ -32,6 +32,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/components/ui/tabs";
+import { toast } from "sonner";
 
 const teko = Teko({ subsets: ["latin"], weight: ["400", "500", "600", "700"] });
 
@@ -59,7 +60,6 @@ export default function LandingPage() {
   }, [mouseX, mouseY]);
 
   const auth = useAuth();
-  const { showToast } = useToast();
 
   const { run: createUserAccount, loading: createUserAccountLoading } =
     useAsync(createUserAndAccount);
@@ -71,7 +71,7 @@ export default function LandingPage() {
     setUserCreation(creationData);
     const result = await sendOtp(creationData.email);
     if (result.success) {
-      showToast("OTP Sent!", "success");
+      toast("OTP Sent!");
       setShowForm("OTP");
     }
   };
@@ -81,14 +81,14 @@ export default function LandingPage() {
     if (result.success) {
       const creationResult = await createUserAccount(userCreationData!);
       if (creationResult.success) {
-        showToast("Account Created!", "success");
+        toast("Account Created!");
         auth.setUser({ userId: creationResult.user?.id!, role: "owner" });
         redirect("/dashboard");
       } else {
-        showToast(creationResult.message ?? "Error", "error");
+        toast(creationResult.message ?? "Error");
       }
     } else {
-      showToast(result.message ?? "Error", "error");
+      toast(result.message ?? "Error");
     }
   };
 

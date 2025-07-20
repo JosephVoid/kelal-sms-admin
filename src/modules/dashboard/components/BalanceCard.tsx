@@ -8,7 +8,7 @@ export default function BalanceCard(props: IBalanceCard) {
   const auth = useAuth();
 
   return (
-    <Card.Root shadow={"xl"} p={5} className="w-2/6 h-fit">
+    <Card.Root shadow={"xl"} p={5} className="w-2/6 h-fit" rounded={"xs"}>
       <Text fontSize={"xl"}>
         {auth.user?.role === "admin" && "All Accounts "}Balance 💰
       </Text>
