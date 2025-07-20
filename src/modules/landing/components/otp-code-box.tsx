@@ -1,3 +1,5 @@
+import { Button } from "@/components/components/ui/button";
+import { Input } from "@/components/components/ui/input";
 import Spinner from "@/components/shared/spinner";
 import React from "react";
 
@@ -15,25 +17,21 @@ export default function OTPCodeBox({
   }
 
   return (
-    <div className="max-w-md rounded-xl bg-white p-6 shadow-lg space-y-4">
+    <div className="rounded-xs bg-white p-6 shadow-lg space-y-4">
       <div>
-        <label className="block text-sm font-medium mb-1">Code</label>
-        <input
+        <Input
+          id="otp"
           type="text"
           placeholder="* * * * * *"
-          className="w-full rounded border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-black-200"
           onChange={(e) => setOTP(e.target.value)}
         />
-        <label className="block text-xs font-light my-1 opacity-75">
+        <p className="text-xs font-light opacity-75 mt-1">
           Enter the 6 digit code sent to your email
-        </label>
+        </p>
       </div>
-      <button
-        className="w-full bg-black text-white py-2 rounded hover:bg-gray-800 cursor-pointer"
-        onClick={handleContinue}
-      >
+      <Button className="w-full" onClick={handleContinue} disabled={loading}>
         {loading ? <Spinner /> : "Continue"}
-      </button>
+      </Button>
     </div>
   );
 }

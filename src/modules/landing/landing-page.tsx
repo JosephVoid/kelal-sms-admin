@@ -21,6 +21,19 @@ import { useAuth } from "@/utils/providers/AuthProvider";
 import { redirect } from "next/navigation";
 import { useToast } from "./lib/toastContext";
 import Link from "next/link";
+import { Teko } from "next/font/google";
+import { Button } from "@/components/components/ui/button";
+import { Input } from "@/components/components/ui/input";
+import { Card } from "@/components/components/ui/card";
+import { Textarea } from "@/components/components/ui/textarea";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/components/ui/tabs";
+
+const teko = Teko({ subsets: ["latin"], weight: ["400", "500", "600", "700"] });
 
 export default function LandingPage() {
   const [showForm, setShowForm] = useState<"SIGNUP" | "OTP" | null>(null);
@@ -80,79 +93,153 @@ export default function LandingPage() {
   };
 
   return (
-    <main className="relative min-h-screen bg-gray-100 text-black overflow-hidden">
+    <div className="relative min-h-screen bg-[#f4f4f4] text-black overflow-hidden">
+      {/* Mouse Glow */}
       <motion.div
         className="pointer-events-none fixed top-0 left-0 w-full h-full z-0"
         style={
           {
             background:
-              "radial-gradient(circle at var(--x) var(--y), rgba(0, 102, 255, 0.1), transparent 60%)",
+              "radial-gradient(circle at var(--x) var(--y), rgba(102, 255, 51, 0.1), transparent 60%)",
             // Bind CSS variables here
             "--x": x,
             "--y": y,
           } as any
         } // TypeScript may require this cast
       />
-
-      <div className="relative z-10 px-4 py-6 sm:px-8 max-w-6xl mx-auto">
-        <header className="flex justify-between items-center mb-20">
-          <div className="text-lg font-bold">
-            <Image src={Logo} alt="Logo" height={50} width={50} />
-          </div>
-          <button className="text-sm px-4 py-2 rounded hover:outline-1 hover:outline-gray-500 transition-all cursor-pointer">
-            <Link href={"/login"}>Sign In</Link>
-          </button>
-        </header>
-
-        <section className="space-y-0 mb-10 text-4xl font-extrabold leading-tight sm:text-6xl">
-          <div>🙅🏽‍♂️ No Paper Work!</div>
-          <div>🙅🏽‍♀️ No Business License!</div>
-          <div>🤖 Take the API</div>
-          <div>💬 Send the SMS!</div>
-        </section>
-
-        <div className="mb-10 w-1/2">
-          <p className="text-base sm:text-md font-extralight">
-            Create your account now and start sending SMS OTP to your clients
-          </p>
-          <button
-            className="mt-2 rounded bg-black px-4 py-2 text-white hover:bg-gray-800"
-            onClick={() => setShowForm("SIGNUP")}
-          >
+      <header className="relative z-20 max-w-7xl mx-auto px-4 flex pt-8 justify-between">
+        <div className="text-lg font-bold">
+          <Image src={Logo} alt="Logo" height={50} width={50} />
+        </div>
+        <button className="text-sm px-4 py-2 rounded cursor-pointer">
+          <Link href={"/login"}>Sign In</Link>
+        </button>
+      </header>
+      <div className="relative z-20 max-w-7xl mx-auto px-4 py-16 grid md:grid-cols-2 gap-8">
+        <div>
+          <h1 className={`text-5xl md:text-8xl font-bold ${teko.className}`}>
+            SMS OTP FOR STARTUPS
+          </h1>
+          <ul className="mt-6 space-y-2">
+            <li>❌ No Business License Required</li>
+            <li>❌ No Paper-work</li>
+            <li>
+              ✅ <b>Just sign up and send SMS OTPs</b>
+            </li>
+          </ul>
+          <Button className="mt-6" onClick={() => setShowForm("SIGNUP")}>
             Create Account
-          </button>
+          </Button>
+          <div className="mt-10">
+            <p className="text-3xl font-bold">
+              0.75 <span className="text-xl">ETB/SMS</span>
+            </p>
+            <p className="text-xs text-gray-600 mt-1">
+              ❗This service is only available in Ethiopia
+            </p>
+          </div>
         </div>
 
-        {showForm === "SIGNUP" && (
-          <SignUpBox onContinue={handleSendOTP} loading={sendOtpLoading} />
-        )}
-        {showForm === "OTP" && (
-          <OTPCodeBox
-            onContinue={handleUserCreation}
-            loading={verifyOtpLoading || createUserAccountLoading}
-          />
-        )}
+        <div>
+          <Tabs defaultValue="node">
+            <TabsList className="bg-transparent">
+              <TabsTrigger value="node">Node.js</TabsTrigger>
+              <TabsTrigger value="curl">cURL</TabsTrigger>
+              <TabsTrigger value="python">Python</TabsTrigger>
+              <TabsTrigger value="php">PHP</TabsTrigger>
+            </TabsList>
+            <TabsContent value="curl">
+              <Card className="bg-black text-green-300 font-mono p-4 text-xs overflow-auto rounded-sm">
+                <pre>
+                  <code>{`curl -X POST https://sms.kelal.et/otp/send \\
+  -H "x-api-key: API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{ "appId": "APP_ID", "to": "+2519xxxxxxx", "otp": "000000" }'`}</code>
+                </pre>
+              </Card>
+            </TabsContent>
 
-        <section className="text-4xl leading-tight sm:text-4xl flex justify-between my-24 items-center">
-          <div className="text-9xl font-extrabold">Steps</div>
-          <div>➡️</div>
-          <div className="space-y-2 text-start font-extralight">
-            <div>✍🏽 Create Account</div>
-            <div>🔑 Create API Key</div>
-            <div>⚙️ Send POST Request</div>
-            <div>💬 Users Receive SMS!</div>
+            <TabsContent value="node">
+              <Card className="bg-black text-green-300 font-mono p-4 text-xs overflow-auto rounded-sm">
+                <pre>
+                  <code>{`const axios = require("axios");
+
+axios.post("https://sms.kelal.et/otp/send", {
+  appId: "APP_ID",
+  to: "+2519xxxxxxx",
+  otp: "000000"
+}, {
+  headers: {
+    "x-api-key": "API_KEY"
+  }
+});`}</code>
+                </pre>
+              </Card>
+            </TabsContent>
+            <TabsContent value="python">
+              <Card className="bg-black text-green-300 font-mono p-4 text-xs overflow-auto rounded-sm">
+                <pre>
+                  <code>{`import requests
+
+url = "https://sms.kelal.et/otp/send"
+headers = {
+  "x-api-key": "API_KEY",
+  "Content-Type": "application/json"
+}
+data = {
+  "appId": "APP_ID",
+  "to": "+2519xxxxxxx",
+  "otp": "000000"
+}
+
+response = requests.post(url, json=data, headers=headers)
+
+print(response.status_code)
+print(response.text)`}</code>
+                </pre>
+              </Card>
+            </TabsContent>
+            <TabsContent value="php">
+              <Card className="bg-black text-green-300 font-mono p-4 text-xs overflow-auto rounded-sm">
+                <pre>
+                  <code>{`<?php
+require 'vendor/autoload.php';
+
+use GuzzleHttp\\Client;
+
+$client = new Client();
+
+$response = $client->post('https://sms.kelal.et/otp/send', [
+  'headers' => [
+    'x-api-key' => 'API_KEY',
+    'Content-Type' => 'application/json',
+  ],
+  'json' => [
+    'appId' => 'APP_ID',
+    'to' => '+2519xxxxxxx',
+    'otp' => '000000',
+  ]
+]);
+
+echo $response->getStatusCode();
+echo $response->getBody();`}</code>
+                </pre>
+              </Card>
+            </TabsContent>
+          </Tabs>
+          <div className="mt-10">
+            {showForm === "SIGNUP" && (
+              <SignUpBox onContinue={handleSendOTP} loading={sendOtpLoading} />
+            )}
+            {showForm === "OTP" && (
+              <OTPCodeBox
+                onContinue={handleUserCreation}
+                loading={verifyOtpLoading || createUserAccountLoading}
+              />
+            )}
           </div>
-        </section>
-
-        <section className="my-24 text-4xl font-extrabold leading-tight sm:text-6xl text-center">
-          ✨ That's It ✨
-        </section>
-        {/* MODIFIED FOOTER SECTION */}
-        <footer className="mt-20 flex justify-between items-center text-xs px-4 py-3 rounded-md">
-          <span className="font-semibold text-lg">KELAL SMS</span>
-          <span className="text-sm">+251920642556 For Support</span>
-        </footer>
+        </div>
       </div>
-    </main>
+    </div>
   );
 }

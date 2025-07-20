@@ -3,6 +3,9 @@
 import React from "react";
 import { CreateUserInput } from "@/modules/auth/types";
 import Spinner from "@/components/shared/spinner";
+import { Label } from "@/components/components/ui/label";
+import { Input } from "@/components/components/ui/input";
+import { Button } from "@/components/components/ui/button";
 
 export default function SignUpBox({
   onContinue,
@@ -46,78 +49,75 @@ export default function SignUpBox({
   }
 
   return (
-    <div className="max-w-md rounded-xl bg-white p-6 shadow-lg space-y-4">
-      <div>
-        <label className="block text-sm font-medium mb-1">Name</label>
-        <input
-          type="text"
-          name="name"
-          placeholder="Name"
-          className="w-full rounded border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-gray-500"
-          onChange={handleFormChange}
-          value={form.name}
-        />
+    <div className="rounded-xs bg-white p-6 shadow-lg w-full space-y-4">
+      <div className="flex flex-wrap gap-4">
+        <div className="w-full md:w-[48%]">
+          <Input
+            id="name"
+            name="name"
+            placeholder="Name"
+            onChange={handleFormChange}
+            value={form.name}
+          />
+        </div>
+
+        <div className="w-full md:w-[48%]">
+          <Input
+            id="email"
+            name="email"
+            type="email"
+            placeholder="Email"
+            onChange={handleFormChange}
+            value={form.email}
+          />
+          {formError.email && (
+            <p className="text-xs mt-1 text-red-500">Invalid Email</p>
+          )}
+        </div>
+
+        <div className="w-full md:w-[48%]">
+          <Input
+            id="phone"
+            name="phone"
+            type="tel"
+            placeholder="+251 - -- -- -- --"
+            onChange={handleFormChange}
+            value={form.phone}
+          />
+          {formError.phone && (
+            <p className="text-xs mt-1 text-red-500">Invalid Phone Number</p>
+          )}
+        </div>
+
+        <div className="w-full md:w-[48%]">
+          <Input
+            id="password"
+            name="password"
+            type="password"
+            placeholder="Password"
+            onChange={handleFormChange}
+            value={form.password}
+          />
+        </div>
+
+        <div className="w-full">
+          <Input
+            id="accountName"
+            name="accountName"
+            placeholder="Account Name"
+            onChange={handleFormChange}
+            value={form.accountName}
+          />
+        </div>
       </div>
-      <div>
-        <label className="block text-sm font-medium mb-1">Email</label>
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          className="w-full rounded border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-gray-500"
-          onChange={handleFormChange}
-          value={form.email}
-        />
-        {formError.email && (
-          <label className="block text-xs mt-1 text-red-400">
-            Invalid Email
-          </label>
-        )}
-      </div>
-      <div>
-        <label className="block text-sm font-medium mb-1">Phone</label>
-        <input
-          name="phone"
-          type="tel"
-          placeholder="+251 - -- -- -- --"
-          className="w-full rounded border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-gray-500"
-          onChange={handleFormChange}
-          value={form.phone}
-        />
-        {formError.phone && (
-          <label className="block text-xs mt-1 text-red-400">
-            Invalid Phone Number
-          </label>
-        )}
-      </div>
-      <div>
-        <label className="block text-sm font-medium mb-1">Password</label>
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          className="w-full rounded border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-gray-500"
-          onChange={handleFormChange}
-          value={form.password}
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium mb-1">Account Name</label>
-        <input
-          type="text"
-          name="accountName"
-          placeholder="Account Name"
-          className="w-full rounded border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-gray-500"
-          onChange={handleFormChange}
-          value={form.accountName}
-        />
-      </div>
-      <button
-        className="w-full bg-black text-white py-2 rounded hover:bg-gray-800 cursor-pointer"
+
+      <Button
+        className="w-full mt-4"
         onClick={handleContinue}
+        disabled={loading}
       >
         {loading ? <Spinner /> : "Continue"}
-      </button>
+      </Button>
     </div>
   );
 }
