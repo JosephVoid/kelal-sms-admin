@@ -3,7 +3,7 @@
 import React, { createContext, ReactNode, useEffect, useState } from "react";
 import type { useraccounts } from "@/prisma/client";
 
-type UserType = Pick<useraccounts, "userId" | "role"> | null;
+type UserType = Pick<useraccounts, "userId"> | null;
 
 const AuthContext = createContext<
   | {
