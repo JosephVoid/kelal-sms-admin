@@ -82,7 +82,7 @@ export default function LandingPage() {
       const creationResult = await createUserAccount(userCreationData!);
       if (creationResult.success) {
         toast("Account Created!");
-        auth.setUser({ userId: creationResult.user?.id!, role: "owner" });
+        auth.setUser({ userId: creationResult.user?.id! });
         redirect("/dashboard");
       } else {
         toast(creationResult.message ?? "Error");

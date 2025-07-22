@@ -8,6 +8,8 @@ import { redirect } from "next/navigation";
 import { useAuth } from "@/utils/providers/AuthProvider";
 import Image from "next/image";
 import Logo from "@/modules/landing/assets/logo.svg";
+import Link from "next/link";
+import { Typography } from "@mui/material";
 
 export default function LoginForm() {
   const auth = useAuth();
@@ -26,7 +28,6 @@ export default function LoginForm() {
     if (login.success) {
       auth.setUser({
         userId: login.user!.id,
-        role: login.user!.useraccounts[0].role,
       });
       toaster.create({
         title: "Login successful.",
@@ -54,7 +55,7 @@ export default function LoginForm() {
       </Heading>
 
       <form onSubmit={handleSubmit}>
-        <VStack>
+        <div className="flex flex-col gap-2">
           <Input
             type="email"
             placeholder="Email"
@@ -68,11 +69,15 @@ export default function LoginForm() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-
+          <Link href="login/forgot-password" className="flex justify-end">
+            <Typography variant="caption" className="text-right">
+              Forgot Password?
+            </Typography>
+          </Link>
           <Button colorScheme="blue" type="submit" width="full">
             Log In
           </Button>
-        </VStack>
+        </div>
       </form>
       <Toaster />
     </Box>

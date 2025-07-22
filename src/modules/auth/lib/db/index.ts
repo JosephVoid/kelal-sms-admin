@@ -87,3 +87,13 @@ export async function createUser({
     },
   });
 }
+
+export async function updateUserPassword(
+  email: string,
+  hashedPassword: string
+) {
+  return await prisma.users.update({
+    where: { email: email },
+    data: { password: hashedPassword, updatedAt: new Date() },
+  });
+}

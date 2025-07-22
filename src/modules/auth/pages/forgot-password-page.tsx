@@ -4,8 +4,9 @@ import { getSession } from "../lib/helpers/session";
 import { Provider } from "@/components/ui/provider";
 import { FaArrowLeft } from "react-icons/fa";
 import Link from "next/link";
+import ForgotPassword from "../components/forgot-password-form";
 
-export default async function LoginPage() {
+export default async function ForgotPasswordPage() {
   const session = await getSession();
 
   if (session?.userId) {
@@ -19,7 +20,7 @@ export default async function LoginPage() {
           <FaArrowLeft />
         </Link>
       </div>
-      <LoginForm />
+      <ForgotPassword />
     </div>
   );
 }
