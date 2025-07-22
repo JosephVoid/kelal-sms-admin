@@ -42,8 +42,9 @@ export function buildMUIColumns(rows: Record<string, any>[]): GridColDef[] {
 
     return {
       field: flatKey,
-      headerName: label,
+      headerName: flatKey,
       flex: 1,
+      minWidth: 100,
       renderCell: (params) => {
         const value = getNestedValue(params.row, flatKey);
         return typeof value === "object" && value !== null

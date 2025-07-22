@@ -39,7 +39,7 @@ export async function getAccountsAdmin() {
     });
 }
 
-export async function getLogsAdmin(page: number, limit: number) {
+export async function getLogsAdmin() {
   return await prisma.logs.findMany({
     select: {
       accounts: {
@@ -84,7 +84,5 @@ export async function getLogsAdmin(page: number, limit: number) {
     orderBy: {
       createdAt: "desc",
     },
-    skip: (page - 1) * limit,
-    take: limit,
   });
 }

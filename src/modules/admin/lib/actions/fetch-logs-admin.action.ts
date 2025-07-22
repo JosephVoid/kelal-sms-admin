@@ -1,18 +1,12 @@
-import { ServerActionResponse } from "@/types/types";
+"use server";
+
 import { getLogsAdmin } from "../db";
 
-export default async function fetchLogsAdminAction({
-  page = 1,
-  limit = 50,
-}: {
-  page?: number;
-  limit?: number;
-}): ServerActionResponse {
-  try {
-    const response = await getLogsAdmin(page, limit);
-    return { success: true, data: response };
-  } catch (error) {
-    console.log(error);
-    return { success: false, error: "Fetch Failed" };
-  }
+export default async function fetchLogsAdminAction() {
+  const response = await getLogsAdmin();
+  return response.map((resp) => ({
+    ...resp,
+    request: JSON.stringify(resp.request),
+    response: JSON.stringify(resp.response),
+  }));
 }

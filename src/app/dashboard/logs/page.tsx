@@ -1,3 +1,3 @@
-import ProvidersPage from "@/modules/admin/pages/ProvidersPage";
+import LogsPage from "@/modules/admin/pages/LogsPage";
 
-export default ProvidersPage;
+export default LogsPage;
