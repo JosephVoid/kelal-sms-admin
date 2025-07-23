@@ -8,12 +8,13 @@ import { Box } from "@mui/material";
 export default function AdminDataTable(props: IAdminDataTable) {
   const buildColumns = buildMUIColumns(props.rows);
   return (
-    <Box sx={{ width: 1000 }}>
+    <Box>
       <DataGrid
         rows={props.rows}
         columns={buildColumns}
         loading={props.loading}
         className="overflow-x-scroll"
+        disableVirtualization
       />
     </Box>
   );

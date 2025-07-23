@@ -86,3 +86,32 @@ export async function getLogsAdmin() {
     },
   });
 }
+
+export async function getProvidersAdmin() {
+  return await prisma.providers.findMany();
+}
+
+export async function getServicesAdmin() {
+  return await prisma.services.findMany();
+}
+
+export async function getUsersAdmin() {
+  return await prisma.users.findMany({
+    select: {
+      id: true,
+      useraccounts: {
+        select: {
+          accounts: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      },
+      fullName: true,
+      email: true,
+      phone: true,
+      createdAt: true,
+    },
+  });
+}
