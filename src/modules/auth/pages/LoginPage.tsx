@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import LoginForm from "../components/LoginForm";
+import LoginForm from "../components/login-form";
 import { getSession } from "../lib/helpers/session";
 import { Provider } from "@/components/ui/provider";
 import { FaArrowLeft } from "react-icons/fa";

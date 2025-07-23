@@ -146,6 +146,7 @@ model otp {
   otp       String?   @db.VarChar
   expiresOn DateTime? @db.Time(6)
   email     String?   @db.VarChar
+  createdOn DateTime? @db.Timestamp(6)
 }
 
 enum roles {

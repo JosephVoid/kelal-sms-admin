@@ -25,7 +25,9 @@ export default function ForgotPassword() {
   );
   const [email, setEmail] = useState("");
 
-  const handleLogin = async () => {};
+  const handleLogin = async () => {
+    redirect("/login");
+  };
 
   return (
     <Box className="w-1/3" p={8} borderRadius="lg">
@@ -117,8 +119,8 @@ function VerifyOTP({ email, onDone }: { email: string; onDone: () => void }) {
   const handleSubmit = async (e: React.FormEvent) => {
     const response = await run(otp, email);
     if (response.success) {
-      onDone();
       toast("Verified!", { icon: <FaCheck /> });
+      onDone();
     } else {
       toast(response.message);
       return;
@@ -133,7 +135,7 @@ function VerifyOTP({ email, onDone }: { email: string; onDone: () => void }) {
       <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-center mb-2">
         We've sent you a 6-digit code
       </h3>
-      <form>
+      <div>
         <div className="flex flex-col">
           <Input
             type="number"
@@ -145,7 +147,7 @@ function VerifyOTP({ email, onDone }: { email: string; onDone: () => void }) {
             {loading ? <Spinner color="white" /> : "Verify Code"}
           </Button>
         </div>
-      </form>
+      </div>
     </>
   );
 }
@@ -165,8 +167,8 @@ function SetNewPassword({
   const handleSubmit = async () => {
     const response = await run(email, password);
     if (response.success) {
+      toast("Password Updated!, Now Sign in again", { icon: <FaCheck /> });
       onDone();
-      toast("Password Updated!", { icon: <FaCheck /> });
     }
   };
 
@@ -178,8 +180,8 @@ function SetNewPassword({
       <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-center mb-2">
         Enter your new Password
       </h3>
-      <form>
-        <div className="flex flex-col">
+      <div>
+        <div className="flex flex-col gap-2">
           <Input
             type="password"
             placeholder="Enter Password"
@@ -194,14 +196,14 @@ function SetNewPassword({
             onChange={(e) => setPasswordConfirm(e.target.value)}
           />
           <Button
-            className="w-full mt-4"
+            className="w-full mt-2"
             onClick={handleSubmit}
             disabled={password !== passwordConfirm}
           >
             {loading ? <Spinner color="white" /> : "Save Password"}
           </Button>
         </div>
-      </form>
+      </div>
     </>
   );
 }

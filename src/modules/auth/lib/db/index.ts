@@ -29,6 +29,7 @@ export async function saveOtpToDb(rawOtp: string, email: string) {
       otp: hashedOtp, // store hashed
       email: email,
       expiresOn: new Date(Date.now() + 5 * 60 * 1000), // 5 min expiry
+      createdOn: new Date(),
     },
   });
 }
@@ -36,6 +37,9 @@ export async function saveOtpToDb(rawOtp: string, email: string) {
 export async function getEmailOtp(email: string) {
   return prisma.otp.findFirst({
     where: { email: email },
+    orderBy: {
+      createdOn: "desc",
+    },
   });
 }
 

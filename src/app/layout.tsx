@@ -17,7 +17,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body>
         <AuthProvider>{children}</AuthProvider>
-        <Toaster />
+        <Toaster toastOptions={{ className: "!rounded-xs" }} />
       </body>
     </html>
   );

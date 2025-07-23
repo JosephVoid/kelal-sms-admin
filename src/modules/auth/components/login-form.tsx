@@ -1,7 +1,6 @@
 "use client";
 
 import { Toaster, toaster } from "@/components/ui/toaster";
-import { Box, Button, Input, Heading, VStack } from "@chakra-ui/react";
 import { useState } from "react";
 import { loginAction } from "../lib/actions/login.action";
 import { redirect } from "next/navigation";
@@ -9,7 +8,11 @@ import { useAuth } from "@/utils/providers/AuthProvider";
 import Image from "next/image";
 import Logo from "@/modules/landing/assets/logo.svg";
 import Link from "next/link";
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
+import { Input } from "@/components/components/ui/input";
+import { Button } from "@/components/components/ui/button";
+import { toast } from "sonner";
+import { FaCheck, FaExclamationTriangle } from "react-icons/fa";
 
 export default function LoginForm() {
   const auth = useAuth();
@@ -29,31 +32,21 @@ export default function LoginForm() {
       auth.setUser({
         userId: login.user!.id,
       });
-      toaster.create({
-        title: "Login successful.",
-        description: "Welcome back!",
-        duration: 3000,
-      });
+      toast("Login successful", { icon: <FaCheck /> });
       redirect("/dashboard");
     } else {
-      toaster.create({
-        title: "Login failed.",
-        description: login.error ?? "",
-        duration: 3000,
-        type: "error",
-      });
+      toast("Login failed " + login.error, { icon: <FaExclamationTriangle /> });
     }
   };
 
   return (
-    <Box maxW="400px" className="w-1/3" p={8} borderRadius="lg">
+    <Box className="w-1/3" p={8} borderRadius="lg">
       <div className="flex justify-center mb-5">
         <Image src={Logo} alt="Logo" height={100} width={100} />
       </div>
-      <Heading mt={6} mb={6} textAlign="center">
+      <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-center mb-2">
         Sign In
-      </Heading>
-
+      </h3>
       <form onSubmit={handleSubmit}>
         <div className="flex flex-col gap-2">
           <Input
@@ -70,16 +63,15 @@ export default function LoginForm() {
             onChange={(e) => setPassword(e.target.value)}
           />
           <Link href="login/forgot-password" className="flex justify-end">
-            <Typography variant="caption" className="text-right">
+            <small className="text-muted-foreground text-sm leading-none font-medium">
               Forgot Password?
-            </Typography>
+            </small>
           </Link>
-          <Button colorScheme="blue" type="submit" width="full">
+          <Button className="w-full mt-3" onClick={handleSubmit}>
             Log In
           </Button>
         </div>
       </form>
-      <Toaster />
     </Box>
   );
 }
