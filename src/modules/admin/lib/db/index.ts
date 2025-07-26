@@ -40,8 +40,15 @@ export async function getAccountsAdmin() {
 }
 
 export async function getLogsAdmin() {
-  return await prisma.logs.findMany({
+  return await prisma.logging.findMany({
     select: {
+      id: true,
+      users: {
+        select: {
+          fullName: true,
+        },
+      },
+      source: true,
       accounts: {
         select: {
           name: true,
@@ -52,37 +59,25 @@ export async function getLogsAdmin() {
           name: true,
         },
       },
-      id: true,
-      keys: {
-        select: {
-          name: true,
-        },
-      },
-      messageId: true,
-      logMessage: true,
-      providers: {
-        select: {
-          name: true,
-        },
-      },
       services: {
         select: {
           name: true,
         },
       },
-      request: true,
-      requestTime: true,
-      response: true,
-      responseTime: true,
-      users: {
+      providers: {
         select: {
-          fullName: true,
+          name: true,
         },
       },
-      createdAt: true,
-    },
-    orderBy: {
-      createdAt: "desc",
+      user_request: true,
+      user_response: true,
+      provider_request: true,
+      provider_response: true,
+      request_time: true,
+      response_time: true,
+      log_message: true,
+      verbose_message: true,
+      created_at: true,
     },
   });
 }

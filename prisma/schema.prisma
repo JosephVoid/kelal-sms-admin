@@ -15,6 +15,7 @@ model accounts {
   updatedAt    DateTime?      @db.Timestamp(6)
   createdAt    DateTime?      @db.Timestamp(6)
   apps         apps[]
+  logging      logging[]
   logs         logs[]
   useraccounts useraccounts[]
 }
@@ -27,6 +28,7 @@ model apps {
   name      String?    @db.VarChar(200)
   accounts  accounts   @relation(fields: [accountId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Apps_accountId_fkey")
   keys      keys[]
+  logging   logging[]
   logs      logs[]
   messages  messages[]
 }
@@ -103,6 +105,7 @@ model providers {
   successField   String?    @db.VarChar
   successValue   String?    @db.VarChar
   messageIdField String?    @db.VarChar
+  logging        logging[]
   logs           logs[]
   messages       messages[]
 }
@@ -113,6 +116,7 @@ model services {
   pricePerMessage Float
   updatedAt       DateTime?  @db.Timestamp(6)
   createdAt       DateTime?  @db.Timestamp(6)
+  logging         logging[]
   logs            logs[]
   messages        messages[]
 }
@@ -132,11 +136,12 @@ model useraccounts {
 model users {
   id           String         @id(map: "Users_pkey") @default(uuid()) @db.Uuid
   fullName     String         @db.VarChar
-  email        String         @unique @db.VarChar
+  email        String         @db.VarChar
   password     String         @db.VarChar
   updatedAt    DateTime?      @db.Timestamp(6)
   createdAt    DateTime?      @db.Timestamp(6)
   phone        String?        @db.VarChar
+  logging      logging[]
   logs         logs[]
   useraccounts useraccounts[]
 }
@@ -147,6 +152,31 @@ model otp {
   expiresOn DateTime? @db.Time(6)
   email     String?   @db.VarChar
   createdOn DateTime? @db.Timestamp(6)
+}
+
+model logging {
+  id                String     @id @db.Uuid
+  user_id           String?    @db.Uuid
+  source            String?
+  account_id        String?    @db.Uuid
+  app_id            String?    @db.Uuid
+  service_id        String?    @db.Uuid
+  provider_id       String?    @db.Uuid
+  user_request      Json?
+  user_response     Json?
+  provider_request  Json?
+  provider_response Json?
+  request_time      DateTime?  @db.Timestamp(6)
+  response_time     DateTime?  @db.Timestamp(6)
+  log_message       String?
+  verbose_message   String?
+  created_at        DateTime?  @default(now()) @db.Timestamp(6)
+  message_id        String?    @db.Uuid
+  accounts          accounts?  @relation(fields: [account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "AccountFK")
+  apps              apps?      @relation(fields: [app_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "AppFK")
+  providers         providers? @relation(fields: [provider_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "ProviderFK")
+  services          services?  @relation(fields: [service_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "ServiceFK")
+  users             users?     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "UserFK")
 }
 
 enum roles {
