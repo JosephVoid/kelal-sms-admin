@@ -8,15 +8,16 @@ export function flattenObject(
   for (const [key, value] of Object.entries(obj)) {
     const newKey = prefix ? `${prefix}.${key}` : key;
 
+    // Preserve null values
     if (
-      typeof value === "object" &&
-      value !== null &&
-      !Array.isArray(value) &&
-      !(value instanceof Date)
+      value === null ||
+      Array.isArray(value) ||
+      value instanceof Date ||
+      typeof value !== "object"
     ) {
-      flattenObject(value, newKey, result);
-    } else {
       result[newKey] = value;
+    } else {
+      flattenObject(value, newKey, result);
     }
   }
 
@@ -31,15 +32,8 @@ export function buildMUIColumns(rows: Record<string, any>[]): GridColDef[] {
   if (!rows || rows.length === 0) return [];
 
   const flatRow = flattenObject(rows[0]);
-
+  console.log({ flatRow });
   return Object.keys(flatRow).map((flatKey) => {
-    const label =
-      flatKey
-        .split(".")
-        .pop()
-        ?.replace(/([A-Z])/g, " $1")
-        .replace(/^./, (str) => str.toUpperCase()) || flatKey;
-
     return {
       field: flatKey,
       headerName: flatKey,

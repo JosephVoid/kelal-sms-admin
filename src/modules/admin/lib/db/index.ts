@@ -79,6 +79,9 @@ export async function getLogsAdmin() {
       verbose_message: true,
       created_at: true,
     },
+    orderBy: {
+      created_at: "desc",
+    },
   });
 }
 

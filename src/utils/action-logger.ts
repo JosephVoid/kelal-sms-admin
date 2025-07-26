@@ -1,6 +1,5 @@
-import { Prisma, PrismaClient } from "@prisma/client";
-import prisma from "@/prisma/client"; // Adjust this path to match your project structure
 import { getSession } from "@/modules/auth/lib/helpers/session";
+import { PrismaClient } from "@/prisma/client";
 
 type LogInput = {
   actionName: string;
@@ -11,17 +10,17 @@ type LogInput = {
   requestTime?: Date;
 };
 
+const prisma = new PrismaClient();
+
 export async function logToDb(data: LogInput) {
   const now = new Date();
-  const db = new PrismaClient();
-
   const session = await getSession();
 
   if (!session) return;
 
-  const userRequest = `[${data.actionName}]: (${data.parameters.map((param) => JSON.stringify(param)).join(", ")})`;
+  const userRequest = `[${data.actionName}]: (${data.parameters.join(", ")})`;
 
-  await db.logging.create({
+  await prisma.logging.create({
     data: {
       id: crypto.randomUUID(),
       user_id: session.userId,
@@ -33,8 +32,8 @@ export async function logToDb(data: LogInput) {
       message_id: null,
       user_request: userRequest ?? {},
       user_response: data.response ?? {},
-      provider_request: null,
-      provider_response: null,
+      provider_request: {},
+      provider_response: {},
       request_time: data.requestTime ?? now,
       response_time: now,
       log_message: data.logMessage,
@@ -48,8 +47,11 @@ export function paramsToArray(params: Record<string, any>) {
   const paramArray = [];
 
   for (const key in params) {
-    const element = params[key];
-    paramArray.push(`${key} -> ${JSON.stringify(element)}`);
+    const value = params[key];
+    const formatted =
+      typeof value === "object" ? JSON.stringify(value) : String(value);
+
+    paramArray.push(`${key} -> ${formatted}`);
   }
 
   return paramArray;
