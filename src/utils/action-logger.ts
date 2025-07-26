@@ -11,9 +11,9 @@ type LogInput = {
   requestTime?: Date;
 };
 
-export async function logToDb(data: LogInput, client?: PrismaClient) {
+export async function logToDb(data: LogInput) {
   const now = new Date();
-  const db = client || prisma;
+  const db = new PrismaClient();
 
   const session = await getSession();
 
@@ -42,4 +42,15 @@ export async function logToDb(data: LogInput, client?: PrismaClient) {
       created_at: now,
     },
   });
+}
+
+export function paramsToArray(params: Record<string, any>) {
+  const paramArray = [];
+
+  for (const key in params) {
+    const element = params[key];
+    paramArray.push(`${key} -> ${JSON.stringify(element)}`);
+  }
+
+  return paramArray;
 }

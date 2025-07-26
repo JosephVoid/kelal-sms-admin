@@ -1,5 +1,6 @@
 "use server";
 
+import { logToDb, paramsToArray } from "@/utils/action-logger";
 import { CreateUserInput } from "../../types";
 import {
   createUser,
@@ -10,6 +11,7 @@ import {
 import { createSession } from "../helpers/session";
 
 export async function createUserAndAccount(input: CreateUserInput) {
+  const requestTime = new Date();
   try {
     const exisitingUser = await getUserByEmail(input.email);
 
@@ -31,6 +33,18 @@ export async function createUserAndAccount(input: CreateUserInput) {
     await linkUserToAccount(user.id, account.id);
 
     await createSession(user.id, "owner", account.id);
+
+    // LOGGING ----
+    // Exlude password logging
+    const { password, ...otherInputs } = input;
+    const { password: userPass, ...otherUserProps } = user;
+    await logToDb({
+      actionName: "createUserAndAccount",
+      parameters: paramsToArray(otherInputs),
+      logMessage: "User & Account Created Successfully",
+      requestTime,
+      response: { user: otherUserProps, account },
+    });
 
     return { success: true, user, account };
   } catch (error) {
