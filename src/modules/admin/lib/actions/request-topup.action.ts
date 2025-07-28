@@ -7,17 +7,21 @@ import { requestTopup } from "../db";
 export async function requestTopupAction({
   accountId,
   amount,
+  userName,
+  txnId,
 }: {
   accountId: string;
   amount: number;
+  userName: string;
+  txnId: string;
 }) {
   const requestTime = new Date();
   try {
-    const topupRequest = await requestTopup(accountId, amount);
+    const topupRequest = await requestTopup(accountId, amount, userName, txnId);
     // LOGGER ----
     await logToDb({
       actionName: "requestTopupAction",
-      parameters: paramsToArray({ accountId, amount }),
+      parameters: paramsToArray({ accountId, amount, userName, txnId }),
       logMessage: "Topup request created successfully",
       requestTime,
       response: { topupRequest },
@@ -30,7 +34,7 @@ export async function requestTopupAction({
     // LOGGER ----
     await logToDb({
       actionName: "requestTopupAction",
-      parameters: paramsToArray({ accountId, amount }),
+      parameters: paramsToArray({ accountId, amount, userName, txnId }),
       logMessage: "Failed to create topup request",
       requestTime,
       response: { error: "Something went wrong" },

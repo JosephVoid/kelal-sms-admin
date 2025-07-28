@@ -19,7 +19,7 @@ export default function AdminDataTable(props: IAdminDataTable) {
         ...props.overideColumns,
       ];
     } else return autoColumns;
-  }, [props.rows]);
+  }, [props.overideColumns]);
 
   return (
     <Box>

@@ -168,17 +168,43 @@ export async function denyTopup(topupId: string) {
   });
 }
 
-export async function requestTopup(accountId: string, amount: number) {
+export async function requestTopup(
+  accountId: string,
+  amount: number,
+  userName: string,
+  txnId: string
+) {
   return await prisma.topups.create({
     data: {
       accountId,
       amount,
       status: "REQUEST",
       type: "MANUAL",
+      userName,
+      txnId,
+      updatedAt: new Date(),
+      createdAt: new Date(),
     },
   });
 }
 
 export async function getTopupsAdmin() {
-  return await prisma.topups.findMany();
+  return await prisma.topups.findMany({
+    select: {
+      id: true,
+      accountId: true,
+      accounts: {
+        select: {
+          name: true,
+        },
+      },
+      amount: true,
+      type: true,
+      status: true,
+      txnId: true,
+      userName: true,
+      updatedAt: true,
+      createdAt: true,
+    },
+  });
 }
