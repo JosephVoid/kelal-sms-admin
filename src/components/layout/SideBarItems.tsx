@@ -8,13 +8,14 @@ import {
   FaChartArea,
   FaCogs,
   FaBuilding,
+  FaCreditCard,
 } from "react-icons/fa";
 
 export const SideBarItems = [
   {
     name: "Home",
     route: "/dashboard",
-    visibleFor: ["owner"],
+    visibleFor: ["owner", "admin"],
     icon: <FaHome />,
   },
   {
@@ -40,6 +41,12 @@ export const SideBarItems = [
     route: "/dashboard/accounts",
     visibleFor: ["admin"],
     icon: <FaThLarge />,
+  },
+  {
+    name: "Topups",
+    route: "/dashboard/topups",
+    visibleFor: ["admin"],
+    icon: <FaCreditCard />,
   },
   {
     name: "Services",

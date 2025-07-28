@@ -14,6 +14,7 @@ model accounts {
   balance      Float
   updatedAt    DateTime?      @db.Timestamp(6)
   createdAt    DateTime?      @db.Timestamp(6)
+  isBanned     Boolean?
   apps         apps[]
   logging      logging[]
   logs         logs[]
@@ -179,6 +180,17 @@ model logging {
   users             users?     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "UserFK")
 }
 
+model topups {
+  id        String       @id @default(uuid()) @db.Uuid
+  accountId String       @db.Uuid
+  amount    Float?
+  txnId     String?      @db.VarChar
+  updatedAt DateTime?    @db.Timestamp(6)
+  createdAt DateTime?    @db.Timestamp(6)
+  type      topuptype?
+  status    topupstatus?
+}
+
 enum roles {
   owner
   viewer
@@ -190,4 +202,16 @@ enum status {
   sent
   delivered
   failed
+}
+
+enum topupstatus {
+  REQUEST
+  APPROVED
+  DENIED
+  AUTOMATIC
+}
+
+enum topuptype {
+  MANUAL
+  CHAPA
 }

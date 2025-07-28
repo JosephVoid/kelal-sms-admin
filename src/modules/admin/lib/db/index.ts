@@ -23,6 +23,7 @@ export async function getAccountsAdmin() {
       balance: true,
       id: true,
       name: true,
+      isBanned: true,
       createdAt: true,
       updatedAt: true,
     },
@@ -112,4 +113,72 @@ export async function getUsersAdmin() {
       createdAt: true,
     },
   });
+}
+
+export async function updateAccountBalance(accountId: string, balance: number) {
+  return await prisma.accounts.update({
+    where: {
+      id: accountId,
+    },
+    data: {
+      balance,
+    },
+  });
+}
+
+export async function banAccount(accountId: string, isBanned: boolean) {
+  return await prisma.accounts.update({
+    where: {
+      id: accountId,
+    },
+    data: {
+      isBanned,
+    },
+  });
+}
+
+export async function approveTopup(
+  topupId: string,
+  accountId: string,
+  amount: number
+) {
+  return await prisma.$transaction(async (tx) => {
+    const topup = await tx.topups.update({
+      where: { id: topupId },
+      data: { status: "APPROVED" },
+    });
+
+    await tx.accounts.update({
+      where: { id: accountId },
+      data: {
+        balance: {
+          increment: amount,
+        },
+      },
+    });
+
+    return topup;
+  });
+}
+
+export async function denyTopup(topupId: string) {
+  return await prisma.topups.update({
+    where: { id: topupId },
+    data: { status: "DENIED" },
+  });
+}
+
+export async function requestTopup(accountId: string, amount: number) {
+  return await prisma.topups.create({
+    data: {
+      accountId,
+      amount,
+      status: "REQUEST",
+      type: "MANUAL",
+    },
+  });
+}
+
+export async function getTopupsAdmin() {
+  return await prisma.topups.findMany();
 }
