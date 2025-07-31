@@ -8,22 +8,24 @@ import fetchAccountAppsAction from "../lib/actions/fetchAccountApps.action";
 import fetchUserAccountAction from "../lib/actions/fetchUserAccount.action";
 import fetchUserAction from "../lib/actions/fetchUser.action";
 import { $Enums } from "@/prisma/index";
+import fetchAccountsAdminAction from "@/modules/admin/lib/actions/fetch-accounts-admin.action";
+import fetchAppsAdminAction from "@/modules/admin/lib/actions/fetch-apps-admin.action";
 
 async function fetchPageData(userId: string, role: $Enums.roles) {
   const user = await fetchUserAction(userId);
   const userAccount = await fetchUserAccountAction(userId);
+  const allAccounts = await fetchAccountsAdminAction();
 
-  const apps = await fetchAccountAppsAction(
-    role === "owner"
-      ? userAccount[0]?.accountId
-      : userAccount.map((account) => account.accountId)
-  );
+  const apps =
+    role === "admin"
+      ? await fetchAppsAdminAction()
+      : await fetchAccountAppsAction(userAccount[0]?.accountId);
 
   const balance =
     role === "owner"
       ? userAccount[0].accounts.balance
-      : userAccount.reduce((acc, currentVal) => {
-          return acc + currentVal.accounts.balance;
+      : allAccounts.reduce((acc, currentVal) => {
+          return acc + currentVal.balance;
         }, 0);
 
   return {

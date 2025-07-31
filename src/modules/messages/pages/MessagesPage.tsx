@@ -11,6 +11,7 @@ export default async function MessagesPage() {
   }
 
   const accountId = session.accountId;
+  const role = session.role;
 
   return (
     <div className="flex flex-col gap-6">
@@ -22,7 +23,7 @@ export default async function MessagesPage() {
           ✨ Checkout the messages sent from your apps ✨
         </Text>
       </div>
-      <DataTable accountId={accountId} />
+      <DataTable accountId={accountId} role={role} />
     </div>
   );
 }

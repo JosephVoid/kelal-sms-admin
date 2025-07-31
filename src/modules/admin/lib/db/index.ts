@@ -208,3 +208,29 @@ export async function getTopupsAdmin() {
     },
   });
 }
+
+export async function getMessagesAdmin() {
+  return prisma.messages.findMany({
+    select: {
+      id: true,
+      appId: true,
+      apps: {
+        select: {
+          name: true,
+        },
+      },
+      sentTo: true,
+      status: true,
+      createdAt: true,
+      sentAt: true,
+      deliveredAt: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+}
+
+export async function getAppsAdmin() {
+  return await prisma.apps.findMany();
+}
