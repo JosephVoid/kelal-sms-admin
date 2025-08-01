@@ -1,51 +1,45 @@
 "use client";
 
-import { useChart, Chart } from "@chakra-ui/charts";
-import { PieChart, Tooltip, Pie, LabelList, Cell } from "recharts";
 import { fetchMsgStatusAction } from "../lib/actions/fetchMsgStatus.action";
-import { capitalizeFirst } from "../utils";
-import CustomPieTooltip from "./CustomToolTip";
 import { Text } from "@chakra-ui/react";
+import dynamic from "next/dynamic";
+import { ApexOptions } from "apexcharts";
+
+const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 export default function DeliveryPieChart({
   data,
 }: {
   data: Awaited<ReturnType<typeof fetchMsgStatusAction>>;
 }) {
-  const chart = useChart({
-    data,
-  });
+  const series = data.map((item) => item.count);
+  const options: ApexOptions = {
+    chart: {
+      type: "pie",
+    },
+    labels: data.map((item) => item.status),
+    colors: data.map((item) => item.color),
+    responsive: [
+      {
+        breakpoint: 480,
+        options: {
+          chart: {
+            width: 200,
+          },
+          legend: {
+            position: "bottom",
+          },
+        },
+      },
+    ],
+  };
 
   return (
     <div className="text-center">
       <Text fontWeight={"light"} fontSize={"small"}>
         Delivery Status
       </Text>
-      <Chart.Root mx="auto" chart={chart} my={6}>
-        <PieChart>
-          <Tooltip
-            cursor={false}
-            animationDuration={100}
-            content={<CustomPieTooltip />}
-          />
-          <Pie
-            isAnimationActive={false}
-            data={chart.data}
-            dataKey={chart.key("count")}
-            nameKey={chart.key("status")}
-          >
-            <LabelList
-              position="inside"
-              fill="white"
-              stroke="none"
-              content={(props) => <p>{capitalizeFirst(String(props.value))}</p>}
-            />
-            {chart.data.map((item, idx) => (
-              <Cell key={item.status} fill={item.color} />
-            ))}
-          </Pie>
-        </PieChart>
-      </Chart.Root>
+      <Chart options={options} series={series} type="pie" width="100%" />
     </div>
   );
 }
