@@ -1,5 +1,5 @@
 import { getSession } from "@/modules/auth/lib/helpers/session";
-import { PrismaClient } from "@/prisma/client";
+import prisma from "./prisma-global";
 
 type LogInput = {
   actionName: string;
@@ -9,8 +9,6 @@ type LogInput = {
   verboseMessage?: string;
   requestTime?: Date;
 };
-
-const prisma = new PrismaClient();
 
 export async function logToDb(data: LogInput) {
   const now = new Date();

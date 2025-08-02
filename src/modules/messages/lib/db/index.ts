@@ -1,6 +1,4 @@
-import { PrismaClient } from "@/prisma/client";
-
-const prisma = new PrismaClient();
+import prisma from "@/utils/prisma-global";
 
 export async function getMessagesForAccount(accountId: string) {
   return prisma.messages.findMany({

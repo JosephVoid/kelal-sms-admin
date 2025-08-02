@@ -1,6 +1,4 @@
-import { PrismaClient } from "@/prisma/index";
-
-const prisma = new PrismaClient();
+import prisma from "@/utils/prisma-global";
 
 export async function getAccountsAdmin() {
   const result = await prisma.accounts.findMany({

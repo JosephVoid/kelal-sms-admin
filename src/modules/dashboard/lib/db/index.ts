@@ -1,7 +1,5 @@
-import { PrismaClient } from "@/prisma/index";
+import prisma from "@/utils/prisma-global";
 import { Status } from "../../types";
-
-const prisma = new PrismaClient();
 
 export async function getMessageStatusDistribution(appId: string) {
   const rawData = await prisma.$queryRaw<{ status: Status; count: number }[]>`
