@@ -9,30 +9,29 @@ import {
 export default function CodeBox() {
   return (
     <Tabs defaultValue="node">
-      <TabsList className="bg-transparent">
+      <TabsList className="!bg-transparent">
         <TabsTrigger value="node">Node.js</TabsTrigger>
         <TabsTrigger value="curl">cURL</TabsTrigger>
         <TabsTrigger value="python">Python</TabsTrigger>
         <TabsTrigger value="php">PHP</TabsTrigger>
       </TabsList>
       <TabsContent value="curl">
-        <Card className="bg-black text-green-300 font-mono p-4 text-xs overflow-auto rounded-sm">
+        <Card className="!bg-black !text-green-300 !font-mono !p-4 !text-xs !overflow-auto !rounded-sm">
           <pre>
             <code>{`curl -X POST https://sms.kelal.et/otp/send \\
   -H "x-api-key: API_KEY" \\
   -H "Content-Type: application/json" \\
-  -d '{ "appId": "APP_ID", "to": "+2519xxxxxxx", "otp": "000000" }'`}</code>
+  -d '{ "to": "+2519xxxxxxx", "otp": "000000" }'`}</code>
           </pre>
         </Card>
       </TabsContent>
 
       <TabsContent value="node">
-        <Card className="bg-black text-green-300 font-mono p-4 text-xs overflow-auto rounded-sm">
+        <Card className="!bg-black !text-green-300 !font-mono !p-4 !text-xs !overflow-auto !rounded-sm">
           <pre>
             <code>{`const axios = require("axios");
 
 axios.post("https://sms.kelal.et/otp/send", {
-  appId: "APP_ID",
   to: "+2519xxxxxxx",
   otp: "000000"
 }, {
@@ -44,7 +43,7 @@ axios.post("https://sms.kelal.et/otp/send", {
         </Card>
       </TabsContent>
       <TabsContent value="python">
-        <Card className="bg-black text-green-300 font-mono p-4 text-xs overflow-auto rounded-sm">
+        <Card className="!bg-black !text-green-300 !font-mono !p-4 !text-xs !overflow-auto !rounded-sm">
           <pre>
             <code>{`import requests
 
@@ -54,7 +53,6 @@ headers = {
   "Content-Type": "application/json"
 }
 data = {
-  "appId": "APP_ID",
   "to": "+2519xxxxxxx",
   "otp": "000000"
 }
@@ -67,7 +65,7 @@ print(response.text)`}</code>
         </Card>
       </TabsContent>
       <TabsContent value="php">
-        <Card className="bg-black text-green-300 font-mono p-4 text-xs overflow-auto rounded-sm">
+        <Card className="!bg-black !text-green-300 !font-mono !p-4 !text-xs !overflow-auto !rounded-sm">
           <pre>
             <code>{`<?php
 require 'vendor/autoload.php';
@@ -82,7 +80,6 @@ $response = $client->post('https://sms.kelal.et/otp/send', [
     'Content-Type' => 'application/json',
   ],
   'json' => [
-    'appId' => 'APP_ID',
     'to' => '+2519xxxxxxx',
     'otp' => '000000',
   ]
