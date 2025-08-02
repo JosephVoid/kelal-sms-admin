@@ -18,11 +18,11 @@ export default function KeyCards(props: IKeys) {
     <>
       <Card.Root>
         <Card.Body className="!p-4">
-          <div className="flex justify-between items-center">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
             <Text fontSize={"smaller"} fontWeight={"bold"}>
               {props.name}
             </Text>
-            <div className="w-1/2">
+            <div className="w-full md:w-1/2 mt-2 md:mt-0">
               <InputGroup>
                 <Input
                   disabled

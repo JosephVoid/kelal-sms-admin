@@ -11,7 +11,7 @@ export default function CreateAPIKeyButton({ appId }: { appId: string }) {
     openModal(<CreateAPIKeyForm appId={appId} onFinish={closeModal} />);
   }
   return (
-    <Button width={"1/3"} onClick={handleCreateAPI}>
+    <Button width={{ base: "100%", md: "1/3" }} onClick={handleCreateAPI}>
       Create API Key
     </Button>
   );

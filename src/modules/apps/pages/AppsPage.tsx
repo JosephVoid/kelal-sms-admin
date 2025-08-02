@@ -27,17 +27,20 @@ export default async function AppsPage() {
         </Text>
       </div>
       <div>
-        <div className="w-full flex">
-          <div className="w-5/6 flex flex-col gap-8">
+        <div className="w-full flex flex-col md:flex-row">
+          <div className="w-full md:w-5/6 flex flex-col gap-8">
+            <div className="mt-4 md:w-1/4">
+              <CreateAppButton />
+            </div>
             {apps?.length === 0 ? (
               <Text className="p-5 opacity-40" fontWeight={"light"}>
                 No Apps
               </Text>
             ) : (
               apps?.map((app) => (
-                <Card.Root className="w-3/4" key={app.id}>
+                <Card.Root className="w-full md:w-3/4" key={app.id}>
                   <Card.Body className="flex flex-col gap-4">
-                    <div className="flex justify-between items-center">
+                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
                       <div className="flex flex-col">
                         <Text fontWeight={"bold"}>{app.name}</Text>
                         <Text fontSize={"small"} className="opacity-70">
@@ -64,7 +67,6 @@ export default async function AppsPage() {
               ))
             )}
           </div>
-          <CreateAppButton />
         </div>
       </div>
     </div>

@@ -116,9 +116,9 @@ export default function LandingPage() {
           <Link href={"/login"}>Sign In</Link>
         </button>
       </header>
-      <div className="relative z-20 max-w-7xl mx-auto px-4 py-16 grid md:grid-cols-2 gap-8">
+      <div className="relative z-20 max-w-7xl mx-auto px-4 py-8 md:py-16 grid grid-cols-1 md:grid-cols-2 gap-8">
         <div>
-          <h1 className={`text-5xl md:text-8xl font-bold ${teko.className}`}>
+          <h1 className={`text-4xl md:text-8xl font-bold ${teko.className}`}>
             SMS OTP FOR STARTUPS
           </h1>
           <ul className="mt-6 space-y-2">

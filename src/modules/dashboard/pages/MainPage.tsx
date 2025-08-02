@@ -49,8 +49,8 @@ export default async function MainPage() {
 
   return (
     <div>
-      <div className="w-full flex gap-10">
-        <div className="w-4/6 flex flex-col gap-8">
+      <div className="w-full flex flex-col md:flex-row gap-10">
+        <div className="w-full md:w-4/6 flex flex-col gap-8">
           <div>
             <Text fontSize={"3xl"} fontWeight={"bold"}>
               Welcome Back, {user?.fullName} 👋

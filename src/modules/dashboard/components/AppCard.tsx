@@ -15,11 +15,11 @@ export default async function AppCard(props: IAppCard) {
       <Card.Root>
         <Card.Body>
           <Card.Title>{props.name}</Card.Title>
-          <div className="w-full flex !p-3">
-            <div className="w-1/2">
+          <div className="w-full flex flex-col md:flex-row !p-3">
+            <div className="w-full md:w-1/2">
               <TimeChart data={timeChart} />
             </div>
-            <div className="w-1/2">
+            <div className="w-full md:w-1/2">
               <DeliveryPieChart data={statusChart} />
             </div>
           </div>

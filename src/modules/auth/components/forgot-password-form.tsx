@@ -30,7 +30,7 @@ export default function ForgotPassword() {
   };
 
   return (
-    <Box className="w-1/3" p={8} borderRadius="lg">
+    <Box className="w-full md:w-1/3" p={8} borderRadius="lg">
       {form === "REQUEST" && (
         <RequestOTP
           onDone={(email) => {

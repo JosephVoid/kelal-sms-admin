@@ -23,8 +23,8 @@ export default async function InfoPage() {
           ❔ Read the guide on how to use Kelal SMS ❔
         </Text>
       </div>
-      <div className="flex justify-between !py-10">
-        <div className="w-1/2">
+      <div className="flex flex-col md:flex-row justify-between !py-10">
+        <div className="w-full md:w-1/2">
           <InfoStepper
             steps={[
               {
@@ -46,7 +46,7 @@ export default async function InfoPage() {
             ]}
           />
         </div>
-        <div className="w-1/2 flex flex-col">
+        <div className="w-full md:w-1/2 flex flex-col">
           <div className="!p-5">
             <Card.Root shadow={"xl"} p={5} className="h-fit" rounded={"xs"}>
               <Text fontSize={"2xl"} fontWeight={"bold"}>

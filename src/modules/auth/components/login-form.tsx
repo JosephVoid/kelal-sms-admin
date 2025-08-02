@@ -40,7 +40,7 @@ export default function LoginForm() {
   };
 
   return (
-    <Box className="w-1/3" p={8} borderRadius="lg">
+    <Box className="w-full md:w-1/3" p={8} borderRadius="lg">
       <div className="flex justify-center mb-5">
         <Image src={Logo} alt="Logo" height={100} width={100} />
       </div>

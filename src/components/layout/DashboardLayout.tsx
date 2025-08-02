@@ -27,12 +27,13 @@ export default async function DashboardLayout({
   const role = session?.role;
 
   const drawerContent = (
-    <div className="h-full flex flex-col justify-between">
-      <div className="!p-4">
+    <div className="h-full flex flex-col">
+      <div className="!p-4 flex-shrink-0">
         <div className="flex justify-center !mb-5">
           <Image src={Logo} alt="logo" height={100} width={100} />
         </div>
-
+      </div>
+      <div className="flex-grow overflow-y-auto !p-4">
         <VStack align="start">
           {SideBarItems.filter(
             (item) => role && item.visibleFor.includes(role)
@@ -43,7 +44,7 @@ export default async function DashboardLayout({
           ))}
         </VStack>
       </div>
-      <div className="flex flex-col gap-4 !p-4">
+      <div className="flex flex-col gap-4 !p-4 flex-shrink-0">
         <Separator />
         <SidebarItem icon={<FaSignOutAlt />} label={"Log Out"} isLogOut />
       </div>

@@ -20,7 +20,12 @@ export default function BalanceCard(props: IBalanceCard) {
   }
 
   return (
-    <Card.Root shadow={"xl"} p={5} className="w-2/6 h-fit" rounded={"xs"}>
+    <Card.Root
+      shadow={"xl"}
+      p={5}
+      className="w-full md:w-2/6 h-fit"
+      rounded={"xs"}
+    >
       <Text fontSize={"xl"}>
         {session?.role === "admin" && "All Accounts "}Balance 💰
       </Text>

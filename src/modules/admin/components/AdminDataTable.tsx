@@ -22,14 +22,33 @@ export default function AdminDataTable(props: IAdminDataTable) {
   }, [props.overideColumns]);
 
   return (
-    <Box>
+    <Box sx={{ width: "100%", overflowX: "auto" }}>
       <DataGrid
         {...props}
         rows={props.rows}
         columns={buildColumns}
         loading={props.loading}
-        className="overflow-x-scroll"
         disableVirtualization
+        sx={{
+          minWidth: 600,
+          "& .MuiDataGrid-root": {
+            border: "none",
+          },
+          "& .MuiDataGrid-cell": {
+            borderBottom: "none",
+          },
+          "& .MuiDataGrid-columnHeaders": {
+            backgroundColor: "#f5f5f5",
+            borderBottom: "none",
+          },
+          "& .MuiDataGrid-virtualScroller": {
+            backgroundColor: "#f5f5f5",
+          },
+          "& .MuiDataGrid-footerContainer": {
+            borderTop: "none",
+            backgroundColor: "#f5f5f5",
+          },
+        }}
       />
     </Box>
   );

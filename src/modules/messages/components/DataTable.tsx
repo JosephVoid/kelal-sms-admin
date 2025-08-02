@@ -62,16 +62,29 @@ export default function DataTable({
   );
 
   return (
-    <div className="w-full overflow-x-scroll">
+    <div style={{ width: "100%", overflowX: "auto" }}>
       <DataGrid
         rows={data ?? []}
         columns={Columns}
         loading={loading}
         sx={{
-          ".MuiDataGrid-columnHeader": {
-            fontSize: "0.8rem",
-            fontWeight: 900,
-            backgroundColor: "lightgray",
+          minWidth: 600,
+          "& .MuiDataGrid-root": {
+            border: "none",
+          },
+          "& .MuiDataGrid-cell": {
+            borderBottom: "none",
+          },
+          "& .MuiDataGrid-columnHeaders": {
+            backgroundColor: "#f5f5f5",
+            borderBottom: "none",
+          },
+          "& .MuiDataGrid-virtualScroller": {
+            backgroundColor: "#f5f5f5",
+          },
+          "& .MuiDataGrid-footerContainer": {
+            borderTop: "none",
+            backgroundColor: "#f5f5f5",
           },
         }}
       />

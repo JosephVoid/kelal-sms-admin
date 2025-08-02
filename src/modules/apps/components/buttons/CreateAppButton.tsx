@@ -12,8 +12,8 @@ export default function CreateAppButton() {
   }
 
   return (
-    <div className="w-1/6 flex flex-col">
-      <Button size="lg" onClick={handleCreateApp}>
+    <div className="w-full md:w-full flex flex-col">
+      <Button size="md" onClick={handleCreateApp}>
         Create App
       </Button>
     </div>
